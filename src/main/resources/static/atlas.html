@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="./atlas.css">
+    <link rel="icon" href="https://gimg2.baidu.com/image_search/src=http%3A%2F%2F5b0988e595225.cdn.sohucs.com%2Fimages%2F20180810%2F440fa3aa4a69476e8902303acb44b696.png&refer=http%3A%2F%2F5b0988e595225.cdn.sohucs.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1667971384&t=e599a1f2633fb3d4f457a808b57ab693">
+    <title>水产品养殖知识图谱</title>
+    
+</head>
+<body onload = "">
+    <!-- 头部信息 -->
+    <div class="header">欢迎使用水产品养殖知识图谱<span class="iconfont icon1">&#xe918;</span>!</div>
+    <!-- 具体内容-下拉列表 -->
+    <div class="content" >
+        <span>请选择:</span>
+        <select name="head" id="head" @change="headChange" v-model="selectedId">
+            <option value="" disabled selected hidden>请选择head</option>
+            <option v-for="(item,index) in head" v-bind:value="item.name">{{item.name}}</option>
+        </select>
+
+        <select name="relation" id="relation">
+            <option value="" disabled selected hidden>请选择relation</option>
+            <option v-for="(item,index) in relation" v-bind:value="item.name">{{item.name}}</option>
+        </select>
+
+        <button @click="search">查询<span class="iconfont">&#xe625;</span></button>
+        <!-- 具体内容-知识图谱 -->
+        <div class="atlas">
+            <div id="graph" style="width: 100%;height:600px;"></div>
+        </div>
+
+    </div>
+    <!-- 尾部信息 -->
+    <div class="footer">
+    </div>
+
+    <!-- 开发环境版本 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="/neo4j/js/echarts.common.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@4.5.0/dist/echarts.min.js"></script>
+    <script>
+        function draw(triplet){
+            var node = []
+            var links = []
+            var myChart = echarts.init(document.getElementById('graph'));
+            var nodeElement = {
+                "name": triplet[0].startNode,
+                "id": "0"
+            }
+            node.push(nodeElement)
+            for (let i = 0; i < triplet.length; i++) {
+                nodeElement = {
+                    "name": triplet[i].endNode,
+                    "id": i + 1
+                }
+                node.push(nodeElement)
+
+                var linksElement = {
+                    "source": 0,
+                    "target": i + 1,
+                    "value": triplet[i].relation,
+                    "symbolSize": 10
+                }
+                links.push(linksElement)
+            }
+
+            var option = {
+                title: {
+                    text: ''
+                },
+                tooltip: {},
+                animationDurationUpdate: 1500,
+                animationEasingUpdate: 'quinticInOut',
+                label: {
+                    normal: {
+                        show: true,
+                        textStyle: {
+                            fontSize: 12
+                        },
+                    }
+                },
+                legend: {
+                    x: "center",
+                    show: false
+                },
+                series: [
+                    {
+                        type: 'graph',
+                        layout: 'force',
+                        symbolSize: 45,
+                        focusNodeAdjacency: true,
+                        roam: true,
+                        edgeSymbol: ['none', 'arrow'],
+                        categories: [{
+                            name: '查询实体',
+                            itemStyle: {
+                                normal: {
+                                    color: "#009800",
+                                }
+                            }
+                        }, {
+                            name: 'instance',
+                            itemStyle: {
+                                normal: {
+                                    color: "#4592FF",
+                                }
+                            }
+                        }, {
+                            name: 'class',
+                            itemStyle: {
+                                normal: {
+                                    color: "#C71585",
+                                }
+                            }
+                        }],
+                        label: {
+                            normal: {
+                                show: true,
+                                textStyle: {
+                                    fontSize: 12,
+                                },
+                            }
+                        },
+                        force: {
+                            repulsion: 1000
+                        },
+                        edgeSymbolSize: [4, 50],
+                        edgeLabel: {
+                            normal: {
+                                show: true,
+                                textStyle: {
+                                    fontSize: 10
+                                },
+                                formatter: "{c}"
+                            }
+                        },
+                        data: node,
+                        links: links,
+                        lineStyle: {
+                            normal: {
+                                opacity: 0.9,
+                                width: 1.3,
+                                curveness: 0,
+                                color: "#262626",
+                            }
+                        }
+                    }
+                ]
+            };
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        }
+
+        var app = new Vue({
+            el:".content",
+            data(){
+                return{
+                    selectedId:"",
+                    head:[],
+                    relation:[],
+                    triplet:[],
+                }
+            },
+            created() {
+                this.load()
+            },
+            methods: {
+                load: function () {
+                    var that = this
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('get', 'http://localhost:8080/head/getHeads', true);
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState == 4 & xhr.status == 200) {
+                            eval("that.head = " + xhr.responseText)
+                        }
+                    }
+                    xhr.send();
+                },
+                headChange: function () {
+                    var that = this
+                    var xhr = new XMLHttpRequest();
+                    var head = document.getElementById("head").value;
+                    xhr.open('get', 'http://localhost:8080/relation/getRelations?head=' + head, true);
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState == 4 & xhr.status == 200) {
+                            eval("that.relation = " + xhr.responseText)
+                        }
+                    }
+                    xhr.send();
+                },
+                search: function () {
+                    var that = this
+                    var xhr = new XMLHttpRequest();
+                    var head = document.getElementById("head").value;
+                    var relation = document.getElementById("relation").value;
+                    xhr.open('get', 'http://localhost:8080/triplet/getTriplet?head=' + head + '&relation=' + relation, true);
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState == 4 & xhr.status == 200) {
+                            eval("that.triplet = " + xhr.responseText)
+                            draw(that.triplet)
+                        }
+                    }
+                    xhr.send();
+                },
+
+            }
+        })
+    </script>
+</body>
+</html>
