@@ -2,8 +2,10 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <title>智慧水产养殖知识图谱系统</title>
     <!-- import CSS -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="icon" href="../logo.svg">
 </head>
 <style >
     .el-header {
@@ -59,7 +61,7 @@
                         background-color="#161b22"
                         text-color="#fff"
                         active-text-color="#7ee787">
-                    <div v-for="item in optionList" :key="item.id">
+                    <div v-for="item in options" :key="item.id">
                         <el-menu-item
                                 :index="item.id"
                                 :key="item.id"
@@ -89,43 +91,39 @@
 
 </body>
 <!-- import Vue before Element -->
-<script src="https://unpkg.com/vue@2/dist/vue.js"></script>
+<script src="../plugins/vue/vue.js"></script>
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 
-<!--import neo4j echarts-->
-<script src="/neo4j/js/echarts.common.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@4.5.0/dist/echarts.min.js"></script>
+
 <script>
     new Vue({
         el: '#app',
         data: function() {
-            const item = {
-                date: '2007-08-31',
-                name: '初音未来',
-                address: 'VOCALOID'
-            };
             return {
-                tableData: Array(20).fill(item),
-                goBackFlag: false,
-                headTitle: '选项1',
-                iframeUrl: 'option-1.html',
-                optionList: [
+                iframeUrl: 'introduction.html',
+                options: [
                     {
                         id: '1',
-                        name: '选项1',
-                        url: 'atlas.html',
-                        icon: 'el-icon-share'
+                        name: '系统简介',
+                        url: 'introduction.html',
+                        icon: 'el-icon-s-home'
                     },
                     {
                         id: '2',
-                        name: '选项2',
-                        url: 'option-2.html',
+                        name: '知识图谱',
+                        url: 'atlas.html',
                         icon: 'el-icon-search'
                     },
                     {
                         id: '3',
-                        name: '选项3',
-                        url: 'option-3.html',
+                        name: '选项1',
+                        url: 'option-1.html',
+                        icon: 'el-icon-menu'
+                    },
+                    {
+                        id: '4',
+                        name: '选项2',
+                        url: 'option-2.html',
                         icon: 'el-icon-menu'
                     }
                 ]
@@ -135,7 +133,6 @@
             optionHandle(item) {
                 console.log(item.name)
                 this.iframeUrl = item.url
-                this.headTitle = item.name
             },
         }
     })

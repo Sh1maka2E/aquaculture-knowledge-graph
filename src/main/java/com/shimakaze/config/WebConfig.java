@@ -8,10 +8,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
  * @author: Sh1maka2E
  * @date: 2023/03/04 19:51:15
  */
-//@Configuration
+@Configuration
 public class WebConfig extends WebMvcConfigurationSupport {
-//    @Override
-//    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-//
-//    }
+    /**
+     * 静态资源映射
+     * @param registry
+     */
+    @Override
+    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
+    }
 }

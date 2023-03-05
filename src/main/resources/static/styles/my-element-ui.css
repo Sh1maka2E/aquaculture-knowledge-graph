@@ -1,0 +1,51 @@
+/*输入框*/
+.el-input__inner {
+    background-color: #161b22;
+    color: #7ee787;
+}
+/*下拉框*/
+.el-scrollbar {
+    background: #161b22;
+}
+.el-select-dropdown__item {
+    color: #8b949e;
+}
+.el-select-dropdown__item.selected {
+    color: #7ee787;
+}
+.el-select-dropdown__item.hover, .el-select-dropdown__item:hover {
+    background-color: #2a2f3b;
+}
+.el-select .el-input__inner:focus {
+    border-color: #7ee787;
+}
+.el-range-editor.is-active, .el-range-editor.is-active:hover, .el-select .el-input.is-focus .el-input__inner {
+    border-color: #7ee787;
+}
+
+/*按钮*/
+.el-button {
+    background: #161b22;
+    border: 1px solid #7ee787;
+    color: #7ee787;
+}
+.el-button:focus {
+    color: #7ee787;
+    border-color: #7ee787;
+    background-color: #161b22;
+}
+.el-button:hover {
+    color: #00ff18;
+    border-color: #00ff18;
+    background-color: #161b22;
+}
+
+.el-header {
+    background-color: #161b22;
+    color: #8b949e;
+    line-height: 60px;
+}
+ asd{
+     background: #49c359;
+     color: #8b5bdf;
+ }

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="../styles/my-element-ui.css">
+    <link rel="icon" href="../logo.svg">
+</head>
+
+<style>
+    .el-main {
+        background-color: #161b22;
+        color: #8b949e;
+        margin-left: 20px;
+        margin-right: 20px;
+        /*line-height: 60px;*/
+        padding: 0px;
+    }
+
+    .el-container {
+        padding: 0px;
+        margin: 0px;
+        background-color: #161b22;
+        border-bottom: 1px solid #7ee787;
+        border-left: 1px solid #7ee787;
+        border-right: 1px solid #7ee787;
+        color: #8b949e;
+        line-height: 60px;
+        padding: 0px;
+    }
+
+    html, body, #app {
+        padding: 0px;
+        margin: 0px;
+        height: 100%;
+    }
+
+</style>
+<body>
+<el-main id="app">
+    <el-container style="height: 100%">
+        <el-header style="text-align: center; font-size: 24px; text-align: left; ">
+            <span>智慧水产养殖知识图谱查询</span>
+        </el-header>
+
+        <div style="height: 60px; background-color: #161b22">
+            <template>
+                <el-select name="head" id="head" @change="headChange" v-model="selectedHead"
+                           filterable placeholder="请选择head"
+                           style="width: 400px; margin-left: 100px;">
+                    <el-option
+                            v-for="(item,index) in head" v-bind:value="item.name">{{item.name}}
+                    </el-option>
+                </el-select>
+                <el-select  name="relation" id="relation"  v-model="selectedRelation"
+                            filterable placeholder="请选择relation"
+                           style="width: 400px; margin-left: 100px; margin-right: 100px">
+                    <el-option
+                            v-for="(item,index) in relation" v-bind:value="item.name">{{item.name}}
+                    </el-option>
+                </el-select>
+            </template>
+            <el-button  @click="search" icon="el-icon-search">查询知识图谱</el-button>
+        </div>
+
+        <!--知识图谱 -->
+        <el-main>
+            <div id="graph" style="width: 100%;height:100%;"></div>
+        </el-main>
+
+    </el-container>
+
+</div>
+
+</body>
+<script src="../plugins/vue/vue.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="../plugins/axios/axios.min.js"></script>
+<script src="/neo4j/js/echarts.common.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@4.5.0/dist/echarts.min.js"></script>
+
+
+<script>
+    function draw(triplet){
+        var node = []
+        var links = []
+        var myChart = echarts.init(document.getElementById('graph'));
+        var nodeElement = {
+            "name": triplet[0].startNode,
+            "id": "0"
+        }
+        node.push(nodeElement)
+        for (let i = 0; i < triplet.length; i++) {
+            nodeElement = {
+                "name": triplet[i].endNode,
+                "id": i + 1
+            }
+            node.push(nodeElement)
+
+            var linksElement = {
+                "source": 0,
+                "target": i + 1,
+                "value": triplet[i].relation,
+                "symbolSize": 10
+            }
+            links.push(linksElement)
+        }
+
+        var option = {
+            title: {
+                text: ''
+            },
+            tooltip: {},
+            animationDurationUpdate: 1500,
+            animationEasingUpdate: 'quinticInOut',
+            label: {
+                normal: {
+                    show: true,
+                    textStyle: {
+                        fontSize: 20
+                    },
+                }
+            },
+            legend: {
+                x: "center",
+                show: false
+            },
+            series: [
+                {
+                    type: 'graph',
+                    layout: 'force',
+                    symbolSize: 45,
+                    focusNodeAdjacency: true,
+                    roam: true,
+                    edgeSymbol: ['none', 'arrow'],
+                    categories: [{
+                        name: '查询实体',
+                        itemStyle: {
+                            normal: {
+                                color: "#009800",
+                            }
+                        }
+                    }, {
+                        name: 'instance',
+                        itemStyle: {
+                            normal: {
+                                color: "#4592FF",
+                            }
+                        }
+                    }, {
+                        name: 'class',
+                        itemStyle: {
+                            normal: {
+                                color: "#C71585",
+                            }
+                        }
+                    }],
+                    label: {
+                        normal: {
+                            show: true,
+                            textStyle: {
+                                // 节点文本颜色
+                                color:"#00ff18",
+                                fontSize: 20,
+                            },
+                        }
+                    },
+                    force: {
+                        repulsion: 1000
+                    },
+                    edgeSymbolSize: [4, 50],
+                    edgeLabel: {
+                        normal: {
+                            show: true,
+                            textStyle: {
+                                fontSize: 20
+                            },
+                            formatter: "{c}"
+                        }
+                    },
+                    data: node,
+                    links: links,
+                    itemStyle:{
+                        normal:{
+                            color: function() {
+                                // 节点颜色
+                                return "#4882e5"
+                            },
+                        }
+                    },
+                    lineStyle: {
+                        normal: {
+                            opacity: 0.9,
+                            width: 1.3,
+                            curveness: 0,
+                            // 关系线颜色
+                            color: "#00ff18",
+                        }
+                    }
+                }
+            ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    }
+    const app = new Vue({
+        el: "#app",
+        data: {
+            selectedHead:"",
+            selectedRelation:"",
+            head:[],
+            relation:[],
+            triplet:[],
+        },
+        created() {
+            this.getHeads()
+        },
+        methods: {
+            getHeads() {
+                axios.get("http://localhost:8080/head/getHeads")
+                    .then(({data}) => {
+                        this.head = data;
+                    })
+                    .catch(err => {
+                        this.$message.error(err)
+                    })
+            },
+            headChange(val) {
+                this.selectedRelation = ''
+                axios.get("http://localhost:8080/relation/getRelations?head=" + val)
+                    .then(({data}) => {
+                        this.relation = data;
+                    })
+                    .catch(err => {
+                        this.$message.error(err)
+                    })
+            },
+            search() {
+                axios.get("http://localhost:8080/triplet/getTriplet?head=" + this.selectedHead + '&relation=' + this.selectedRelation)
+                    .then(({data}) => {
+                        draw(data);
+                    })
+                    .catch(err => {
+                        this.$message.error("请选择head和relation")
+                    })
+            }
+        }
+    })
+</script>
+</html>
+
