@@ -26,13 +26,6 @@
         padding: 0px;
     }
 
-    .el-footer {
-        border-top: 1px solid #7ee787;
-        background-color: #161b22;
-        color: #8b949e;
-        line-height: 60px;
-    }
-
     html,body,#app{
         padding: 0px;
         margin: 0px;
@@ -49,9 +42,9 @@
 <body>
 <div id="app">
     <el-container>
-        <el-header style="text-align: center; font-size: 24px">
-            <i class="el-icon-share" style="font-size:30px"></i>
+        <el-header style="text-align: center; font-size: 24px;">
             <span>智慧水产养殖知识图谱系统</span>
+            <i class="el-icon-share" style="font-size:30px"></i>
         </el-header>
 
 
@@ -82,9 +75,6 @@
                 ></iframe>
             </el-main>
         </el-container>
-
-
-<!--        <el-footer style="text-align: center; font-size: 24px">Designed By Sh1maka2E.</el-footer>-->
     </el-container>
 
 </div>
@@ -100,30 +90,24 @@
         el: '#app',
         data: function() {
             return {
-                iframeUrl: 'introduction.html',
+                iframeUrl: 'option1-atlas.html',
                 options: [
                     {
                         id: '1',
-                        name: '系统简介',
-                        url: 'introduction.html',
-                        icon: 'el-icon-s-home'
-                    },
-                    {
-                        id: '2',
                         name: '知识图谱',
-                        url: 'atlas.html',
+                        url: 'option1-atlas.html',
                         icon: 'el-icon-search'
                     },
                     {
-                        id: '3',
-                        name: '选项1',
-                        url: 'option-1.html',
+                        id: '2',
+                        name: '选项2',
+                        url: 'option-2.html',
                         icon: 'el-icon-menu'
                     },
                     {
-                        id: '4',
-                        name: '选项2',
-                        url: 'option-2.html',
+                        id: '3',
+                        name: '选项3',
+                        url: 'option-3.html',
                         icon: 'el-icon-menu'
                     }
                 ]

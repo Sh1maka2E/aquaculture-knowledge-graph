@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>智慧水产养殖知识图谱系统</title>
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="../css/my-element-ui.css">
+    <link rel="icon" href="../logo.svg">
+</head>
+<style >
+    .el-header {
+        background-color: #161b22;
+        color: #8b949e;
+        line-height: 60px;
+    }
+
+    .el-main {
+        background-color: #161b22;
+        color: #8b949e;
+        text-align: center;
+        margin-left: 20%;
+        margin-right: 20%;
+        line-height: 60px;
+        padding: 0px;
+    }
+
+    .el-footer {
+        background-color: #0d1117;
+        color: #8b949e;
+        line-height: 60px;
+        text-align: center;
+        font-size: 24px;
+    }
+
+    .el-container {
+        margin: 0px;
+        height: 100%;
+        background-color: #161b22;
+        color: #8b949e;
+        padding-top: 100px;
+    }
+
+    html, body, #app {
+        background-color: #0d1117;
+        padding: 0px;
+        margin: 0px;
+        height: 100%;
+    }
+
+
+
+
+</style>
+<body>
+<div id="app">
+    <el-container>
+        <el-main>
+            <el-span style="font-size: 40px;">
+                <i class="el-icon-share" style="font-size:40px"></i>
+                <el-span>智慧水产养殖知识图谱系统</el-span>
+                <el-row></el-row>
+            </el-span>
+            <el-span style="font-size:18px">
+                本课题内容为智慧水产养殖知识图谱的构建。通过收集水产养殖的数据，设计数据模式，构建知识图谱系统，展示三元组，描述水产实体之间的关系，对农业水产养殖现代化提供支持，对养殖户实际生产有很大的帮助。
+            </el-span>
+            <el-row></el-row>
+            <a class="my-button"
+               href="index.html" style="text-decoration:none; margin-top: 200px;">
+                开始使用<i class="el-icon-switch-button" style="margin-left: 5px"></i>
+            </a>
+        </el-main>
+
+
+        <el-footer>Designed By Sh1maka2E
+            <a href="https://github.com/Sh1maka2E/aquaculture-knowledge-graph"><img src="https://github.githubassets.com/images/modules/site/icons/footer/github-mark.svg">
+        </el-footer>
+    </el-container>
+
+</div>
+
+</body>
+<!-- import Vue before Element -->
+<script src="../plugins/vue/vue.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+
+<script>
+    new Vue({
+        el: '#app'
+
+    })
+</script>
+</html>
+
