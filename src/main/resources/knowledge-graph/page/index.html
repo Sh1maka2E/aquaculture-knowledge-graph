@@ -40,7 +40,7 @@
 
 </style>
 <body>
-<div id="app">
+<div id="app" style="display: none;" :style="{display: 'block'}">
     <el-container>
         <el-header style="text-align: center; font-size: 24px;">
             <span>智慧水产养殖知识图谱系统</span>
@@ -90,12 +90,12 @@
         el: '#app',
         data: function() {
             return {
-                iframeUrl: 'option1-atlas.html',
+                iframeUrl: 'option-1-atlas.html',
                 options: [
                     {
                         id: '1',
                         name: '知识图谱',
-                        url: 'option1-atlas.html',
+                        url: 'option-1-atlas.html',
                         icon: 'el-icon-search'
                     },
                     {
