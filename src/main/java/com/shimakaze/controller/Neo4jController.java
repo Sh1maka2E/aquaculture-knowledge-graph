@@ -22,73 +22,40 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/neo4j")
 public class Neo4jController {
-    @Autowired
-    private AquaticProductService aquaticProductService;
 
     @Autowired
-    private AquaticProductLarvaeService aquaticProductLarvaeService;
+    private NodeService nodeService;
 
     @Autowired
-    private DiseaseService diseaseService;
+    private RelationService relationService;
 
-    @Autowired
-    private EquipmentService equipmentService;
-
-    @Autowired
-    private FeedService feedService;
-
-    @Autowired
-    private HabitatService habitatService;
-
-    @Autowired
-    private SeedingPlaceService seedingPlaceService;
-
-    @Autowired
-    private EquipWithService equipWithService;
-
-    @Autowired
-    private FeedingService feedingService;
-
-    @Autowired
-    private GlowIntoService glowIntoService;
-
-    @Autowired
-    private LiveInService liveInService;
-
-    @Autowired
-    private MaySufferService maySufferService;
-
-    @Autowired
-    private RaisedInService raisedInService;
-
-
+    /**
+     * 返回所有节点
+     * @return
+     */
     @GetMapping("/getHeads")
     public List<String> getHeads(){
-        List<String> list = new ArrayList<>();
-        aquaticProductService.getNodes().forEach(node -> list.add(node.getName()));
-        aquaticProductLarvaeService.getNodes().forEach(node -> list.add(node.getName()));
-        diseaseService.getNodes().forEach(node -> list.add(node.getName()));
-        equipmentService.getNodes().forEach(node -> list.add(node.getName()));
-        feedService.getNodes().forEach(node -> list.add(node.getName()));
-        habitatService.getNodes().forEach(node -> list.add(node.getName()));
-        seedingPlaceService.getNodes().forEach(node -> list.add(node.getName()));
-        return list;
+        return nodeService.getHeads();
     }
 
+    /**
+     * 返回所有关系，head为可选项
+     * @param head
+     * @return
+     */
     @GetMapping(value = {"/getRelations", "/getRelations/{head}"})
     public List<RelationDto> getRelations(@PathVariable(required = false, value = "head") String head){
-        List<RelationDto> list = new ArrayList<>();
-        equipWithService.getRelations().forEach(list::add);
-        feedingService.getRelations().forEach(list::add);
-        glowIntoService.getRelations().forEach(list::add);
-        liveInService.getRelations().forEach(list::add);
-        maySufferService.getRelations().forEach(list::add);
-        raisedInService.getRelations().forEach(list::add);
-        if (head != null) {
-            return list.stream()
-                    .filter(relationDto -> head.equals(relationDto.getStartNode()) || head.equals(relationDto.getEndNode()))
-                    .collect(Collectors.toList());
-        }
-        return list;
+        return relationService.getRelations(head);
     }
+
+    /**
+     * 返回指定head的所有关系（仅返回关系名称，关系不重复）
+     * @param head
+     * @return
+     */
+    @GetMapping("/getRelationsByHead/{head}")
+    public List<String> getRelationsByHead(@PathVariable(value = "head") String head){
+        return relationService.getRelationsByHead(head);
+    }
+
 }
