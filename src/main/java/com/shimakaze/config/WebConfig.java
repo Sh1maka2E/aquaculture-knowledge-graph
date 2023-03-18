@@ -6,7 +6,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 
 /**
  * @author: Sh1maka2E
- * @date: 2023/03/04 19:51:15
+ * @date: 2023/03/18 22:07:15
  */
 @Configuration
 public class WebConfig extends WebMvcConfigurationSupport {

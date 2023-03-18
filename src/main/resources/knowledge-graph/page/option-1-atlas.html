@@ -51,14 +51,14 @@
                            filterable placeholder="请选择head"
                            style="width: 400px; margin-left: 100px;">
                     <el-option
-                            v-for="(item,index) in head" v-bind:value="item.name">{{item.name}}
+                            v-for="(item,index) in head" v-bind:value="item">{{item}}
                     </el-option>
                 </el-select>
                 <el-select  name="relation" id="relation"  v-model="selectedRelation"
                             filterable placeholder="请选择relation"
                            style="width: 400px; margin-left: 100px; margin-right: 100px">
                     <el-option
-                            v-for="(item,index) in relation" v-bind:value="item.name">{{item.name}}
+                            v-for="(item,index) in relation" v-bind:value="item.relation">{{item.relation}}
                     </el-option>
                 </el-select>
             </template>
@@ -219,8 +219,9 @@
         },
         methods: {
             getHeads() {
-                axios.get("http://localhost:8080/head/getHeads")
+                axios.get("http://localhost:8080/neo4j/getHeads")
                     .then(({data}) => {
+                        console.log(data)
                         this.head = data;
                     })
                     .catch(err => {
@@ -229,7 +230,7 @@
             },
             headChange(val) {
                 this.selectedRelation = ''
-                axios.get("http://localhost:8080/relation/getRelations?head=" + val)
+                axios.get("http://localhost:8080/neo4j/getRelations/" + val)
                     .then(({data}) => {
                         this.relation = data;
                     })

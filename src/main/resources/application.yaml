@@ -4,7 +4,6 @@ spring:
       username: neo4j
       password: 1234
       uri: http://localhost:7474
-
 logging:
   level:
     root: error
