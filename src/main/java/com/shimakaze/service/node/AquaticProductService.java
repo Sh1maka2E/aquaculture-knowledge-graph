@@ -1,7 +1,6 @@
 package com.shimakaze.service.node;
 
 import com.shimakaze.pojo.node.AquaticProduct;
-import org.springframework.data.neo4j.annotation.Query;
 
 import java.util.List;
 

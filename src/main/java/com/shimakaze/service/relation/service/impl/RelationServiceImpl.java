@@ -80,6 +80,7 @@ public class RelationServiceImpl implements RelationService {
         raisedInService.getRelations().forEach(list::add);
 
         return list.stream()
+                // 过滤出头结点为head的关系
                 .filter(relationDto -> head.equals(relationDto.getStartNode()))
                 .map(RelationDto::getRelation)
                 .distinct()

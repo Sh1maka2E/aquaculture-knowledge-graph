@@ -1,7 +1,6 @@
 package com.shimakaze.repository.relation;
 
 
-import com.shimakaze.pojo.relation.LiveIn;
 import com.shimakaze.pojo.relation.RaisedIn;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.Neo4jRepository;

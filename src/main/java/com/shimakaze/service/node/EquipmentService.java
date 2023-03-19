@@ -1,6 +1,5 @@
 package com.shimakaze.service.node;
 
-import com.shimakaze.pojo.node.Disease;
 import com.shimakaze.pojo.node.Equipment;
 
 import java.util.List;

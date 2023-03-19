@@ -2,7 +2,6 @@ package com.shimakaze.repository.relation;
 
 
 import com.shimakaze.pojo.relation.EquipWith;
-import com.shimakaze.pojo.relation.MaySuffer;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.stereotype.Repository;

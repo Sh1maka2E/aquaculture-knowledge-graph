@@ -19,13 +19,17 @@ public class GlowIntoServiceImpl implements GlowIntoService {
     @Autowired
     private GlowIntoRepository GlowIntoRepository;
 
-
+    /**
+     * 查询关系，仅返回头节点、尾节点、关系的名称
+     * @return
+     */
     @Override
     public List<RelationDto> getRelations() {
         List<RelationDto> list = new ArrayList<>();
         GlowIntoRepository.getRelations().forEach(relation -> {
             RelationDto relationDto = new RelationDto();
             relationDto.setStartNode(relation.getStartNode().getName());
+            // 使用工具类获取关系类注解（即名称）并赋给relation
             relationDto.setRelation(GetAnnotationNameUtil.getRelationName(relation.getClass()));
             relationDto.setEndNode(relation.getEndNode().getName());
             list.add(relationDto);
@@ -33,12 +37,18 @@ public class GlowIntoServiceImpl implements GlowIntoService {
         return list;
     }
 
+    /**
+     * 查询带有head的关系，仅返回头节点、尾节点、关系的名称
+     * @param head
+     * @return
+     */
     @Override
     public List<RelationDto> getRelations(String head) {
         List<RelationDto> list = new ArrayList<>();
         GlowIntoRepository.getRelations(head).forEach(relation -> {
             RelationDto relationDto = new RelationDto();
             relationDto.setStartNode(head);
+            // 使用工具类获取关系类注解（即名称）并赋给relation
             relationDto.setRelation(GetAnnotationNameUtil.getRelationName(relation.getClass()));
             relationDto.setEndNode(relation.getEndNode().getName());
             list.add(relationDto);
