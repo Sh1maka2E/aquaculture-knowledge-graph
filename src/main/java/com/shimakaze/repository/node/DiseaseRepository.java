@@ -14,7 +14,7 @@ import java.util.List;
  * @date: 2023/03/18 11:17:01
  */
 @Repository
-public interface DiseaseRepository extends Neo4jRepository<DiseaseRepository, Long> {
+public interface DiseaseRepository extends Neo4jRepository<Disease, Long> {
     @Query("MATCH (n:`疾病`) RETURN n")
     List<Disease> queryAll();
 }

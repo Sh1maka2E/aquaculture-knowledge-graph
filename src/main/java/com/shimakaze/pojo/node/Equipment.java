@@ -14,7 +14,7 @@ import org.neo4j.ogm.annotation.Property;
 @NodeEntity(label = "池塘设备")
 public class Equipment extends CommonNode {
 
-    /**
+    /**o
      * 池塘设备属性
      */
     @Property(name = "池塘设备属性")

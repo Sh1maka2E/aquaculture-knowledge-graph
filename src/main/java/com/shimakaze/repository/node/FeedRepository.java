@@ -14,7 +14,7 @@ import java.util.List;
  * @date: 2023/03/18 11:17:01
  */
 @Repository
-public interface FeedRepository extends Neo4jRepository<FeedRepository, Long> {
+public interface FeedRepository extends Neo4jRepository<Feed, Long> {
     @Query("MATCH (n:`饲养饵料`) RETURN n")
     List<Feed> queryAll();
 }

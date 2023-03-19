@@ -14,7 +14,7 @@ import java.util.List;
  * @date: 2023/03/18 11:17:01
  */
 @Repository
-public interface SeedingPlaceRepository extends Neo4jRepository<SeedingPlaceRepository, Long> {
+public interface SeedingPlaceRepository extends Neo4jRepository<SeedingPlace, Long> {
     @Query("MATCH (n:`育苗场地`) RETURN n")
     List<SeedingPlace> queryAll();
 }

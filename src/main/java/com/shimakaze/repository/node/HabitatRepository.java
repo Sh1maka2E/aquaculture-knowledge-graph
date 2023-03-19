@@ -14,7 +14,7 @@ import java.util.List;
  * @date: 2023/03/18 11:17:01
  */
 @Repository
-public interface HabitatRepository extends Neo4jRepository<HabitatRepository, Long> {
+public interface HabitatRepository extends Neo4jRepository<Habitat, Long> {
     @Query("MATCH (n:`栖息地`) RETURN n")
     List<Habitat> queryAll();
 }

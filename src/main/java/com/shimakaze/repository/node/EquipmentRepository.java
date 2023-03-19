@@ -14,7 +14,7 @@ import java.util.List;
  * @date: 2023/03/18 11:17:01
  */
 @Repository
-public interface EquipmentRepository extends Neo4jRepository<EquipmentRepository, Long> {
+public interface EquipmentRepository extends Neo4jRepository<Equipment, Long> {
     @Query("MATCH (n:`池塘设备`) RETURN n")
     List<Equipment> queryAll();
 }
