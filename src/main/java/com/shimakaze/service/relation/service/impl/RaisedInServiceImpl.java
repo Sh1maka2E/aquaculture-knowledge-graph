@@ -39,15 +39,15 @@ public class RaisedInServiceImpl implements RaisedInService {
 
     /**
      * 查询带有head的关系，仅返回头节点、尾节点、关系的名称
-     * @param head
+     * @param name
      * @return
      */
     @Override
-    public List<RelationDto> getRelations(String head) {
+    public List<RelationDto> getRelations(String name) {
         List<RelationDto> list = new ArrayList<>();
-        RaisedInRepository.getRelations(head).forEach(relation -> {
+        RaisedInRepository.getRelations(name).forEach(relation -> {
             RelationDto relationDto = new RelationDto();
-            relationDto.setStartNode(head);
+            relationDto.setStartNode(name);
             // 使用工具类获取关系类注解（即名称）并赋给relation
             relationDto.setRelation(GetAnnotationNameUtil.getRelationName(relation.getClass()));
             relationDto.setEndNode(relation.getEndNode().getName());

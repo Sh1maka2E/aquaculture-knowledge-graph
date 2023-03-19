@@ -14,9 +14,11 @@ import java.util.List;
  */
 @Repository
 public interface RaisedInRepository extends Neo4jRepository<RaisedIn, Long> {
+    // 根据关系查询
     @Query("MATCH p=()-[r:`养殖于`]->() RETURN p")
     List<RaisedIn> getRelations();
 
+    // 根据头节点和关系查询
     @Query("MATCH p=(n{name:{0}})-[r:`养殖于`]->() RETURN p")
-    List<RaisedIn> getRelations(String head);
+    List<RaisedIn> getRelations(String name);
 }

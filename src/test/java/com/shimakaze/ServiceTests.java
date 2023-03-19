@@ -1,5 +1,6 @@
 package com.shimakaze;
 
+import com.shimakaze.pojo.node.AquaticProduct;
 import com.shimakaze.service.node.*;
 import com.shimakaze.service.relation.service.*;
 import org.junit.Test;
@@ -10,6 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -56,16 +58,18 @@ public class ServiceTests {
     @Autowired
     private RaisedInService raisedInService;
 
+    @Autowired
+    private NodeService nodeService;
+
     @Test
     public void testQueryNode() {
-//        System.out.println(GetAnnotationNameUtil.getNodeName(AquaticProduct.class));
-        aquaticProductService.getNodes().forEach(System.out::println);
-        aquaticProductLarvaeService.getNodes().forEach(System.out::println);
-        diseaseService.getNodes().forEach(System.out::println);
-        equipmentService.getNodes().forEach(System.out::println);
-        feedService.getNodes().forEach(System.out::println);
-        habitatService.getNodes().forEach(System.out::println);
-        seedingPlaceService.getNodes().forEach(System.out::println);
+//        aquaticProductService.getNodes().forEach(System.out::println);
+//        aquaticProductLarvaeService.getNodes().forEach(System.out::println);
+//        diseaseService.getNodes().forEach(System.out::println);
+//        equipmentService.getNodes().forEach(System.out::println);
+//        feedService.getNodes().forEach(System.out::println);
+//        habitatService.getNodes().forEach(System.out::println);
+//        seedingPlaceService.getNodes().forEach(System.out::println);
     }
 
     @Test

@@ -1,6 +1,7 @@
 package com.shimakaze;
 
 import com.shimakaze.common.RelationDto;
+import com.shimakaze.repository.node.*;
 import com.shimakaze.repository.relation.*;
 import com.shimakaze.service.node.*;
 import com.shimakaze.service.relation.service.*;
@@ -37,6 +38,31 @@ public class RepositoryTests {
 
     @Autowired
     private RelationService relationService;
+
+    @Autowired
+    private NodeRepository nodeRepository;
+
+    @Autowired
+    private AquaticProductLarvaeRepository aquaticProductLarvaeRepository;
+
+    @Autowired
+    private AquaticProductRepository aquaticProductRepository;
+
+    @Autowired
+    private DiseaseRepository diseaseRepository;
+
+    @Autowired
+    private EquipmentRepository equipmentRepository;
+
+    @Autowired
+    private FeedRepository feedRepository;
+
+    @Autowired
+    private HabitatRepository habitatRepository;
+
+    @Autowired
+    private SeedingPlaceRepository seedingPlaceRepository;
+
 
     @Test
     public void testQueryRelationString(){
@@ -76,6 +102,26 @@ public class RepositoryTests {
 
 
         System.out.println(collect);
+
+    }
+
+    @Test
+    public void testQueryNode(){
+//        System.out.println(nodeRepository.getLabel("草鱼"));
+//        System.out.println(nodeRepository.getLabel("鳖塘"));
+//        System.out.println(nodeRepository.getLabel("蚯蚓"));
+
+//        aquaticProductRepository.getNodes().forEach(s -> {
+//            System.out.println(s.toString());
+//        });
+
+        System.out.println(aquaticProductLarvaeRepository.getNode("蚤状幼体").toString());
+        System.out.println(aquaticProductRepository.getNode("南美白对虾").toString());
+        System.out.println(diseaseRepository.getNode("烂鳃病").toString());
+        System.out.println(equipmentRepository.getNode("喷水式增氧机").toString());
+        System.out.println(feedRepository.getNode("蚯蚓").toString());
+        System.out.println(habitatRepository.getNode("湖泊").toString());
+        System.out.println(seedingPlaceRepository.getNode("草鱼塘").toString());
 
     }
 

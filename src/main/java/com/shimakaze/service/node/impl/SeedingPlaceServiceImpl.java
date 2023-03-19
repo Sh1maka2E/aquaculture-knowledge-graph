@@ -16,11 +16,25 @@ import java.util.List;
 public class SeedingPlaceServiceImpl implements SeedingPlaceService {
 
     @Autowired
-    private SeedingPlaceRepository SeedingPlaceRepository;
+    private SeedingPlaceRepository seedingPlaceRepository;
 
-
+    /**
+     * 查询所有节点
+     * @return
+     */
     @Override
     public List<SeedingPlace> getNodes() {
-        return SeedingPlaceRepository.queryAll();
+        return seedingPlaceRepository.getNodes();
+    }
+
+
+    /**
+     * 查询单个节点的属性
+     * @param name
+     * @return
+     */
+    @Override
+    public SeedingPlace getNode(String name) {
+        return seedingPlaceRepository.getNode(name);
     }
 }

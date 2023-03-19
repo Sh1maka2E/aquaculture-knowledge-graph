@@ -16,11 +16,25 @@ import java.util.List;
 public class FeedServiceImpl implements FeedService {
 
     @Autowired
-    private FeedRepository FeedRepository;
+    private FeedRepository feedRepository;
 
-
+    /**
+     * 查询所有节点
+     * @return
+     */
     @Override
     public List<Feed> getNodes() {
-        return FeedRepository.queryAll();
+        return feedRepository.getNodes();
+    }
+
+
+    /**
+     * 查询单个节点的属性
+     * @param name
+     * @return
+     */
+    @Override
+    public Feed getNode(String name) {
+        return feedRepository.getNode(name);
     }
 }

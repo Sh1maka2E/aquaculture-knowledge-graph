@@ -18,9 +18,22 @@ public class AquaticProductServiceImpl implements AquaticProductService {
     @Autowired
     private AquaticProductRepository aquaticProductRepository;
 
-
+    /**
+     * 查询所有节点
+     * @return
+     */
     @Override
     public List<AquaticProduct> getNodes() {
-        return aquaticProductRepository.queryAll();
+        return aquaticProductRepository.getNodes();
+    }
+
+    /**
+     * 查询单个节点的属性
+     * @param name
+     * @return
+     */
+    @Override
+    public AquaticProduct getNode(String name) {
+        return aquaticProductRepository.getNode(name);
     }
 }

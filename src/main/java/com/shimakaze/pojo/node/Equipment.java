@@ -1,6 +1,7 @@
 package com.shimakaze.pojo.node;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.shimakaze.common.CommonNode;
 import lombok.Data;
 import org.neo4j.ogm.annotation.NodeEntity;
@@ -19,5 +20,6 @@ public class Equipment extends CommonNode {
      * 池塘设备属性
      */
     @Property(name = "池塘设备属性")
+    @JsonProperty(value = "池塘设备属性")
     private String equipmentProperty;
 }

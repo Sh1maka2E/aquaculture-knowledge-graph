@@ -16,11 +16,25 @@ import java.util.List;
 public class HabitatServiceImpl implements HabitatService {
 
     @Autowired
-    private HabitatRepository HabitatRepository;
+    private HabitatRepository habitatRepository;
 
-
+    /**
+     * 查询所有节点
+     * @return
+     */
     @Override
     public List<Habitat> getNodes() {
-        return HabitatRepository.queryAll();
+        return habitatRepository.getNodes();
+    }
+
+
+    /**
+     * 查询单个节点的属性
+     * @param name
+     * @return
+     */
+    @Override
+    public Habitat getNode(String name) {
+        return habitatRepository.getNode(name);
     }
 }

@@ -36,11 +36,11 @@ public class RelationServiceImpl implements RelationService {
 
     /**
      * 返回所有关系，head和relation为可选项
-     * @param head
+     * @param name
      * @return
      */
     @Override
-    public List<RelationDto> getRelations(String head, String relation) {
+    public List<RelationDto> getRelations(String name, String relation) {
         List<RelationDto> list = new ArrayList<>();
         equipWithService.getRelations().forEach(list::add);
         feedingService.getRelations().forEach(list::add);
@@ -48,10 +48,10 @@ public class RelationServiceImpl implements RelationService {
         liveInService.getRelations().forEach(list::add);
         maySufferService.getRelations().forEach(list::add);
         raisedInService.getRelations().forEach(list::add);
-        if (head != null) {
-            // 如果传递了head，则过滤出头节点或尾节点为head的关系
+        if (name != null) {
+            // 如果传递了name，则过滤出头节点或尾节点为name的关系
             list = list.stream()
-                    .filter(relationDto -> head.equals(relationDto.getStartNode()) || head.equals(relationDto.getEndNode()))
+                    .filter(relationDto -> name.equals(relationDto.getStartNode()) || name.equals(relationDto.getEndNode()))
                     .collect(Collectors.toList());
             if(relation != null) {
                 // 如果传递了relation，则继续过滤出关系为relation的关系
@@ -66,11 +66,11 @@ public class RelationServiceImpl implements RelationService {
 
     /**
      * 返回指定head的所有关系（仅返回关系名称，关系不重复）
-     * @param head
+     * @param name
      * @return
      */
     @Override
-    public List<String> getRelationsByHead(String head) {
+    public List<String> getRelationsWithoutRepetition(String name) {
         List<RelationDto> list = new ArrayList<>();
         equipWithService.getRelations().forEach(list::add);
         feedingService.getRelations().forEach(list::add);
@@ -81,7 +81,7 @@ public class RelationServiceImpl implements RelationService {
 
         return list.stream()
                 // 过滤出头结点为head的关系
-                .filter(relationDto -> head.equals(relationDto.getStartNode()))
+                .filter(relationDto -> name.equals(relationDto.getStartNode()))
                 .map(RelationDto::getRelation)
                 .distinct()
                 .collect(Collectors.toList());

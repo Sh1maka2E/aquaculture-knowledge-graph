@@ -9,5 +9,9 @@ import java.util.List;
  * @date: 2023/03/18 11:19:50
  */
 public interface DiseaseService {
+    // 查询所有节点
     List<Disease> getNodes();
+
+    // 查询单个节点的属性
+    Disease getNode(String name);
 }

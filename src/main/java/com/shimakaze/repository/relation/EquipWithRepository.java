@@ -14,9 +14,11 @@ import java.util.List;
  */
 @Repository
 public interface EquipWithRepository extends Neo4jRepository<EquipWith, Long> {
+    // 根据关系查询
     @Query("MATCH p=()-[r:`需要配备`]->() RETURN p")
     List<EquipWith> getRelations();
 
+    // 根据头节点和关系查询
     @Query("MATCH p=(n{name:{0}})-[r:`需要配备`]->() RETURN p")
-    List<EquipWith> getRelations(String head);
+    List<EquipWith> getRelations(String name);
 }

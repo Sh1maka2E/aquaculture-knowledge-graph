@@ -14,9 +14,11 @@ import java.util.List;
  */
 @Repository
 public interface MaySufferRepository extends Neo4jRepository<MaySuffer, Long> {
+    // 根据关系查询
     @Query("MATCH p=()-[r:`可能患有疾病`]->() RETURN p")
     List<MaySuffer> getRelations();
 
+    // 根据头节点和关系查询
     @Query("MATCH p=(n{name:{0}})-[r:`可能患有疾病`]->() RETURN p")
-    List<MaySuffer> getRelations(String head);
+    List<MaySuffer> getRelations(String name);
 }

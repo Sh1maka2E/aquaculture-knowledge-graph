@@ -261,7 +261,7 @@
             headChange(val) {
                 this.relation = ''
                 this.selectedRelation = ''
-                axios.get("http://localhost:8080/neo4j/getRelationsByHead/" + val)
+                axios.get("http://localhost:8080/neo4j/getRelationsWithoutRepetition/" + val)
                     .then(({data}) => {
                         this.relation = data;
                     })

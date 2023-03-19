@@ -11,15 +11,16 @@ import java.util.List;
 public interface RelationService {
     /**
      * 返回所有关系
-     * @param head
+     * @param name
+     * @param relation
      * @return
      */
-    List<RelationDto> getRelations(String head, String relation);
+    List<RelationDto> getRelations(String name, String relation);
 
     /**
-     * 返回指定head的关系
-     * @param head
+     * 返回指定name的关系
+     * @param name
      * @return
      */
-    List<String> getRelationsByHead(String head);
+    List<String> getRelationsWithoutRepetition(String name);
 }

@@ -16,11 +16,25 @@ import java.util.List;
 public class EquipmentServiceImpl implements EquipmentService {
 
     @Autowired
-    private EquipmentRepository EquipmentRepository;
+    private EquipmentRepository equipmentRepository;
 
-
+    /**
+     * 查询所有节点
+     * @return
+     */
     @Override
     public List<Equipment> getNodes() {
-        return EquipmentRepository.queryAll();
+        return equipmentRepository.getNodes();
+    }
+
+
+    /**
+     * 查询单个节点的属性
+     * @param name
+     * @return
+     */
+    @Override
+    public Equipment getNode(String name) {
+        return equipmentRepository.getNode(name);
     }
 }

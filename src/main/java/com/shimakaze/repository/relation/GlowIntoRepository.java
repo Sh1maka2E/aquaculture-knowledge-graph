@@ -14,9 +14,11 @@ import java.util.List;
  */
 @Repository
 public interface GlowIntoRepository extends Neo4jRepository<GlowInto, Long> {
+    // 根据关系查询
     @Query("MATCH p=()-[r:`成长`]->() RETURN p")
     List<GlowInto> getRelations();
 
+    // 根据头节点和关系查询
     @Query("MATCH p=(n{name:{0}})-[r:`成长`]->() RETURN p")
-    List<GlowInto> getRelations(String head);
+    List<GlowInto> getRelations(String name);
 }

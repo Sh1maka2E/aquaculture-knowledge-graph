@@ -1,6 +1,7 @@
 package com.shimakaze.pojo.node;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.shimakaze.common.CommonNode;
 import lombok.Data;
 import org.neo4j.ogm.annotation.NodeEntity;
@@ -19,6 +20,7 @@ public class Feed extends CommonNode {
      * 特征
      */
     @Property(name = "特征")
+    @JsonProperty(value = "特征")
     private String characteristic;
 
 }

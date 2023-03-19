@@ -1,6 +1,7 @@
 package com.shimakaze.pojo.node;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.shimakaze.common.CommonNode;
 import lombok.Data;
 import org.neo4j.ogm.annotation.NodeEntity;
@@ -18,35 +19,41 @@ public class AquaticProduct extends CommonNode {
      * 别名
      */
     @Property(name = "俗称")
+    @JsonProperty(value = "俗称")
     private String alias;
 
     /**
      * 可能患有疾病
      */
     @Property(name = "可能患有疾病")
+    @JsonProperty(value = "可能患有疾病")
     private String maySuffer;
 
     /**
      * 栖息地
      */
     @Property(name = "栖息地")
+    @JsonProperty(value = "栖息地")
     private String habitat;
 
     /**
      * 特征
      */
     @Property(name = "特征")
+    @JsonProperty(value = "特征")
     private String characteristic;
 
     /**
      * 育苗场地
      */
     @Property(name = "育苗场地")
+    @JsonProperty(value = "育苗场地")
     private String seedingPlace;
 
     /**
      * 饲养饵料
      */
     @Property(name = "饲养饵料")
+    @JsonProperty(value = "饲养饵料")
     private String feeding;
 }

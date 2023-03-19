@@ -9,5 +9,9 @@ import java.util.List;
  * @date: 2023/03/18 11:19:50
  */
 public interface AquaticProductLarvaeService {
+    // 查询所有节点
     List<AquaticProductLarvae> getNodes();
+
+    // 查询所单个节点的属性
+    AquaticProductLarvae getNode(String name);
 }

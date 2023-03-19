@@ -16,11 +16,25 @@ import java.util.List;
 public class DiseaseServiceImpl implements DiseaseService {
 
     @Autowired
-    private DiseaseRepository DiseaseRepository;
+    private DiseaseRepository diseaseRepository;
 
-
+    /**
+     * 查询所有节点
+     * @return
+     */
     @Override
     public List<Disease> getNodes() {
-        return DiseaseRepository.queryAll();
+        return diseaseRepository.getNodes();
+    }
+
+
+    /**
+     * 查询单个节点的属性
+     * @param name
+     * @return
+     */
+    @Override
+    public Disease getNode(String name) {
+        return diseaseRepository.getNode(name);
     }
 }

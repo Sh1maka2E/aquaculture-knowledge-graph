@@ -18,9 +18,22 @@ public class AquaticProductLarvaeServiceImpl implements AquaticProductLarvaeServ
     @Autowired
     private AquaticProductLarvaeRepository aquaticProductLarvaeRepository;
 
-
+    /**
+     * 查询所有节点
+     * @return
+     */
     @Override
     public List<AquaticProductLarvae> getNodes() {
-        return aquaticProductLarvaeRepository.queryAll();
+        return aquaticProductLarvaeRepository.getNodes();
+    }
+
+    /**
+     * 查询单个节点的属性
+     * @param name
+     * @return
+     */
+    @Override
+    public AquaticProductLarvae getNode(String name) {
+        return aquaticProductLarvaeRepository.getNode(name);
     }
 }

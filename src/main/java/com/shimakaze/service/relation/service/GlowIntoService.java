@@ -14,5 +14,5 @@ public interface GlowIntoService {
     List<RelationDto> getRelations();
 
     // 查询带有head的关系，仅返回头节点、尾节点、关系的名称
-    List<RelationDto> getRelations(String head);
+    List<RelationDto> getRelations(String name);
 }

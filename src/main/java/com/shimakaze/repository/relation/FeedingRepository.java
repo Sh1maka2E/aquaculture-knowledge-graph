@@ -14,9 +14,11 @@ import java.util.List;
  */
 @Repository
 public interface FeedingRepository extends Neo4jRepository<Feeding, Long> {
+    // 根据关系查询
     @Query("MATCH p=()-[r:`投喂`]->() RETURN p")
     List<Feeding> getRelations();
 
+    // 根据头节点和关系查询
     @Query("MATCH p=(n{name:{0}})-[r:`投喂`]->() RETURN p")
-    List<Feeding> getRelations(String head);
+    List<Feeding> getRelations(String name);
 }
