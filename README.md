@@ -10,5 +10,5 @@
 
 ## 注意
 1.springboot版本为**1.5.12.RELEASE**，如果版本过高会有未知bug，无法查询neo4j数据  
-2.最好不要使用lombok，否则也会有bug
+
 
