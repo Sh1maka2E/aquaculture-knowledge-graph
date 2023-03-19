@@ -1,5 +1,6 @@
 package com.shimakaze.common;
 
+import lombok.Data;
 import org.neo4j.ogm.annotation.EndNode;
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.StartNode;
@@ -12,6 +13,7 @@ import org.neo4j.ogm.annotation.StartNode;
 /**
  * 公共关系类
  */
+@Data
 public class CommonRelation {
     @GraphId
     protected Long id;
@@ -25,28 +27,4 @@ public class CommonRelation {
      */
     @EndNode
     protected CommonNode endNode;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public CommonNode getStartNode() {
-        return startNode;
-    }
-
-    public void setStartNode(CommonNode startNode) {
-        this.startNode = startNode;
-    }
-
-    public CommonNode getEndNode() {
-        return endNode;
-    }
-
-    public void setEndNode(CommonNode endNode) {
-        this.endNode = endNode;
-    }
 }

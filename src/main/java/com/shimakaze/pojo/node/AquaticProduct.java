@@ -2,6 +2,7 @@ package com.shimakaze.pojo.node;
 
 
 import com.shimakaze.common.CommonNode;
+import lombok.Data;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
 
@@ -10,7 +11,7 @@ import org.neo4j.ogm.annotation.Property;
  * @author: Sh1maka2E
  * @date: 2023/03/18 11:07:24
  */
-
+@Data
 @NodeEntity(label = "水产品")
 public class AquaticProduct extends CommonNode {
     /**
@@ -48,65 +49,4 @@ public class AquaticProduct extends CommonNode {
      */
     @Property(name = "饲养饵料")
     private String feeding;
-
-    @Override
-    public String toString() {
-        return "AquaticProduct{" +
-                "name='" + name + '\'' +
-                ", alias='" + alias + '\'' +
-                ", maySuffer='" + maySuffer + '\'' +
-                ", habitat='" + habitat + '\'' +
-                ", characteristic='" + characteristic + '\'' +
-                ", seedingPlace='" + seedingPlace + '\'' +
-                ", feeding='" + feeding + '\'' +
-                '}';
-    }
-
-    public String getAlias() {
-        return alias;
-    }
-
-    public void setAlias(String alias) {
-        this.alias = alias;
-    }
-
-    public String getMaySuffer() {
-        return maySuffer;
-    }
-
-    public void setMaySuffer(String maySuffer) {
-        this.maySuffer = maySuffer;
-    }
-
-    public String getHabitat() {
-        return habitat;
-    }
-
-    public void setHabitat(String habitat) {
-        this.habitat = habitat;
-    }
-
-    public String getCharacteristic() {
-        return characteristic;
-    }
-
-    public void setCharacteristic(String characteristic) {
-        this.characteristic = characteristic;
-    }
-
-    public String getSeedingPlace() {
-        return seedingPlace;
-    }
-
-    public void setSeedingPlace(String seedingPlace) {
-        this.seedingPlace = seedingPlace;
-    }
-
-    public String getFeeding() {
-        return feeding;
-    }
-
-    public void setFeeding(String feeding) {
-        this.feeding = feeding;
-    }
 }

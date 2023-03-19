@@ -28,9 +28,9 @@ public class WebConfig extends WebMvcConfigurationSupport {
      * 解决controller返回中文乱码
      * @param converters
      */
-    @Override
-    protected void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        StringHttpMessageConverter converter = new StringHttpMessageConverter(Charset.forName("UTF-8"));
-        converters.add(converter);
-    }
+//    @Override
+//    protected void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+//        StringHttpMessageConverter converter = new StringHttpMessageConverter(Charset.forName("UTF-8"));
+//        converters.add(converter);
+//    }
 }

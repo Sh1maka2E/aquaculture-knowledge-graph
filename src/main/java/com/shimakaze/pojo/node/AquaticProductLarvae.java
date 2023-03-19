@@ -2,6 +2,7 @@ package com.shimakaze.pojo.node;
 
 
 import com.shimakaze.common.CommonNode;
+import lombok.Data;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
 
@@ -10,7 +11,7 @@ import org.neo4j.ogm.annotation.Property;
  * @author: Sh1maka2E
  * @date: 2023/03/18 11:07:24
  */
-
+@Data
 @NodeEntity(label = "水产品幼体")
 public class AquaticProductLarvae extends CommonNode {
 
@@ -31,38 +32,4 @@ public class AquaticProductLarvae extends CommonNode {
      */
     @Property(name = "饲养饵料")
     private String feeding;
-
-    @Override
-    public String toString() {
-        return "AquaticProductLarvae{" +
-                "name='" + name + '\'' +
-                ", characteristic='" + characteristic + '\'' +
-                ", glowInto='" + glowInto + '\'' +
-                ", feeding='" + feeding + '\'' +
-                '}';
-    }
-
-    public String getCharacteristic() {
-        return characteristic;
-    }
-
-    public void setCharacteristic(String characteristic) {
-        this.characteristic = characteristic;
-    }
-
-    public String getglowInto() {
-        return glowInto;
-    }
-
-    public void setglowInto(String glowInto) {
-        this.glowInto = glowInto;
-    }
-
-    public String getFeeding() {
-        return feeding;
-    }
-
-    public void setFeeding(String feeding) {
-        this.feeding = feeding;
-    }
 }
