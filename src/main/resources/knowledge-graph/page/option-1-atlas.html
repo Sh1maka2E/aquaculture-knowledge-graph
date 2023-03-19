@@ -54,15 +54,15 @@
                             v-for="(item,index) in head" v-bind:value="item">{{item}}
                     </el-option>
                 </el-select>
-                <el-select  name="relation" id="relation"  v-model="selectedRelation"
-                            filterable placeholder="请选择relation"
+                <el-select name="relation" id="relation" v-model="selectedRelation"
+                           filterable placeholder="请选择relation"
                            style="width: 400px; margin-left: 100px; margin-right: 100px">
                     <el-option
                             v-for="(item,index) in relation" v-bind:value="item">{{item}}
                     </el-option>
                 </el-select>
             </template>
-            <el-button  @click="search" icon="el-icon-search">查询知识图谱</el-button>
+            <el-button @click="search" icon="el-icon-search">查询知识图谱</el-button>
         </div>
 
         <!--知识图谱 -->
@@ -72,7 +72,7 @@
 
     </el-container>
 
-</div>
+    </div>
 
 </body>
 <script src="../plugins/vue/vue.js"></script>
@@ -83,31 +83,31 @@
 
 
 <script>
-    function draw(triplet){
-        var node = []
-        var links = []
+    function draw(triplet) {
         var myChart = echarts.init(document.getElementById('graph'));
-        var nodeElement = {
-            "name": triplet[0].startNode,
-            "id": "0"
-        }
-        node.push(nodeElement)
+        var myNodes = []
+        var myLinks = []
+        var set = new Set();
         for (let i = 0; i < triplet.length; i++) {
-            nodeElement = {
-                "name": triplet[i].endNode,
-                "id": i + 1
+            set.add(triplet[i].startNode)
+            set.add(triplet[i].endNode)
+        }
+        set.forEach(function (element) {
+            var node = {
+                "name": element
             }
-            node.push(nodeElement)
+            myNodes.push(node)
+        })
 
-            var linksElement = {
-                "source": 0,
-                "target": i + 1,
+        for (let i = 0; i < triplet.length; i++) {
+            var link = {
+                "source": triplet[i].startNode,
+                "target": triplet[i].endNode,
                 "value": triplet[i].relation,
                 "symbolSize": 10
             }
-            links.push(linksElement)
+            myLinks.push(link)
         }
-
         var option = {
             title: {
                 text: ''
@@ -126,6 +126,24 @@
             legend: {
                 x: "center",
                 show: false
+            },
+            // 工具箱
+            toolbox: {
+                // 显示工具箱
+                show: true,
+                feature: {
+                    mark: {
+                        show: true
+                    },
+                    // 还原
+                    restore: {
+                        show: true
+                    },
+                    // 保存为图片
+                    saveAsImage: {
+                        show: true
+                    }
+                }
             },
             series: [
                 {
@@ -162,8 +180,10 @@
                             show: true,
                             textStyle: {
                                 // 节点文本颜色
-                                color:"#00ff18",
-                                fontSize: 20,
+                                // color: "#75bfff",
+                                // color: "#e8c140",
+                                color: "#ffffff",
+                                fontSize: 18,
                             },
                         }
                     },
@@ -175,18 +195,18 @@
                         normal: {
                             show: true,
                             textStyle: {
-                                fontSize: 20
+                                fontSize: 18
                             },
                             formatter: "{c}"
                         }
                     },
-                    data: node,
-                    links: links,
-                    itemStyle:{
-                        normal:{
-                            color: function() {
+                    data: myNodes,
+                    links: myLinks,
+                    itemStyle: {
+                        normal: {
+                            color: function () {
                                 // 节点颜色
-                                return "#4882e5"
+                                return "#f16667"
                             },
                         }
                     },
@@ -195,8 +215,9 @@
                             opacity: 0.9,
                             width: 1.3,
                             curveness: 0,
+                            symbolSize: 10,
                             // 关系线颜色
-                            color: "#00ff18",
+                            color: "#7ee787",
                         }
                     }
                 }
@@ -204,15 +225,24 @@
         };
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
+        // 点击事件
+        myChart.on('click', function (param){
+            if (param.dataType == 'node') {
+                console.log('点击节点:', param.name);
+            } else {
+                console.log('点击关系:', param.value);
+            }
+        });
     }
+
     const app = new Vue({
         el: "#app",
         data: {
-            selectedHead:"",
-            selectedRelation:"",
-            head:[],
-            relation:[],
-            triplet:[],
+            selectedHead: "",
+            selectedRelation: "",
+            head: [],
+            relation: [],
+            triplet: []
         },
         created() {
             this.getHeads()
@@ -240,13 +270,42 @@
                     })
             },
             search() {
-                axios.get("http://localhost:8080/triplet/getTriplet?head=" + this.selectedHead + '&relation=' + this.selectedRelation)
-                    .then(({data}) => {
-                        draw(data);
-                    })
-                    .catch(err => {
-                        this.$message.error("请选择head和relation")
-                    })
+                if (this.selectedHead === '' && this.selectedRelation === '') {
+                    console.log("head和relation都为空")
+                    axios.get("http://localhost:8080/neo4j/getRelations/")
+                        .then(({data}) => {
+                            console.log(data)
+                            this.triplet = data;
+                            draw(data);
+                        })
+                        .catch(err => {
+                            this.$message.error("数据异常")
+                        })
+                } else if (this.selectedHead !== '' && this.selectedRelation === '') {
+                    console.log("relation为空")
+                    axios.get("http://localhost:8080/neo4j/getRelations/" + this.selectedHead)
+                        .then(({data}) => {
+                            console.log(data)
+                            this.triplet = data;
+                            draw(data);
+                        })
+                        .catch(err => {
+                            this.$message.error("数据异常")
+                        })
+                } else if (this.selectedHead !== '' && this.selectedRelation !== '') {
+                    console.log("head和relation都不为空")
+                    axios.get("http://localhost:8080/neo4j/getRelations/" + this.selectedHead + '/' + this.selectedRelation)
+                        .then(({data}) => {
+                            console.log(data)
+                            this.triplet = data;
+                            draw(data);
+                        })
+                        .catch(err => {
+                            this.$message.error("数据异常")
+                        })
+                }
+
+
             }
         }
     })

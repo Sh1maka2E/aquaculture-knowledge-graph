@@ -39,13 +39,14 @@ public class Neo4jController {
     }
 
     /**
-     * 返回所有关系，head为可选项
+     * 返回所有关系，head和relation为可选项
      * @param head
      * @return
      */
-    @GetMapping(value = {"/getRelations", "/getRelations/{head}"})
-    public List<RelationDto> getRelations(@PathVariable(required = false, value = "head") String head){
-        return relationService.getRelations(head);
+    @GetMapping(value = {"/getRelations", "/getRelations/{head}","/getRelations/{head}/{relation}"})
+    public List<RelationDto> getRelations(@PathVariable(required = false, value = "head") String head,
+                                          @PathVariable(required = false, value = "relation") String relation){
+        return relationService.getRelations(head,relation);
     }
 
     /**

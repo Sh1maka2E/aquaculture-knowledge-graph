@@ -14,7 +14,7 @@ public interface RelationService {
      * @param head
      * @return
      */
-    List<RelationDto> getRelations(String head);
+    List<RelationDto> getRelations(String head, String relation);
 
     /**
      * 返回指定head的关系

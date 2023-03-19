@@ -35,12 +35,12 @@ public class RelationServiceImpl implements RelationService {
     private RaisedInService raisedInService;
 
     /**
-     * 返回所有关系，head为可选项
+     * 返回所有关系，head和relation为可选项
      * @param head
      * @return
      */
     @Override
-    public List<RelationDto> getRelations(String head) {
+    public List<RelationDto> getRelations(String head, String relation) {
         List<RelationDto> list = new ArrayList<>();
         equipWithService.getRelations().forEach(list::add);
         feedingService.getRelations().forEach(list::add);
@@ -49,9 +49,17 @@ public class RelationServiceImpl implements RelationService {
         maySufferService.getRelations().forEach(list::add);
         raisedInService.getRelations().forEach(list::add);
         if (head != null) {
-            return list.stream()
+            // 如果传递了head，则过滤出头节点或尾节点为head的关系
+            list = list.stream()
                     .filter(relationDto -> head.equals(relationDto.getStartNode()) || head.equals(relationDto.getEndNode()))
                     .collect(Collectors.toList());
+            if(relation != null) {
+                // 如果传递了relation，则继续过滤出关系为relation的关系
+                list = list.stream()
+                        .filter(relationDto -> relation.equals(relationDto.getRelation()))
+                        .collect(Collectors.toList());
+            }
+            return list;
         }
         return list;
     }
