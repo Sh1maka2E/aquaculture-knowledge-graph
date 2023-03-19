@@ -1,8 +1,10 @@
 package com.shimakaze.controller;
 
 import com.shimakaze.common.RelationDto;
+import com.shimakaze.pojo.node.AquaticProduct;
 import com.shimakaze.service.node.*;
 import com.shimakaze.service.relation.service.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +17,7 @@ import java.util.List;
  * @author: Sh1maka2E
  * @date: 2023/03/18 19:22:12
  */
+@Slf4j
 @RestController
 @RequestMapping("/neo4j")
 public class Neo4jController {
@@ -31,7 +34,17 @@ public class Neo4jController {
      */
     @GetMapping("/getHeads")
     public List<String> getHeads(){
-        return nodeService.getHeads();
+        return nodeService.getNodes();
+    }
+
+    /**
+     * 返回单个节点的属性
+     * @param head
+     * @return
+     */
+    @GetMapping("/getHead/{head}")
+    public Object getHead(@PathVariable(value = "head") String head) {
+        return nodeService.getNode(head);
     }
 
     /**
@@ -50,9 +63,9 @@ public class Neo4jController {
      * @param head
      * @return
      */
-    @GetMapping("/getRelationsByHead/{head}")
+    @GetMapping("/getRelationsWithoutRepetition/{head}")
     public List<String> getRelationsByHead(@PathVariable(value = "head") String head){
-        return relationService.getRelationsByHead(head);
+        return relationService.getRelationsWithoutRepetition(head);
     }
 
 }
