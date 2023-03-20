@@ -6,7 +6,7 @@
     <!-- import CSS -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <link rel="stylesheet" href="../css/my-element-ui.css">
-    <link rel="icon" href="../logo.svg">
+    <link rel="icon" href="https://cn.vuejs.org/logo.svg">
 </head>
 
 <style>
@@ -70,9 +70,9 @@
             <div id="graph" style="width: 100%;height:100%;"></div>
             <!-- 节点信息表单 -->
             <el-dialog title="节点信息" :visible.sync="dialogTableVisible">
-<!--                <el-table :data="gridData" >-->
-<!--                    <el-table-column v-for="(key,value) in gridData" :property = "value" :label = "key" width="150"></el-table-column>-->
-<!--                </el-table>-->
+                <!--                <el-table :data="gridData" >-->
+                <!--                    <el-table-column v-for="(key,value) in gridData" :property = "value" :label = "key" width="150"></el-table-column>-->
+                <!--                </el-table>-->
                 <p v-for="(value,key) in gridData" :key="key" :value="value">{{key}}:{{value}}</p>
             </el-dialog>
         </el-main>
@@ -83,10 +83,9 @@
 
 </body>
 <script src="../plugins/vue/vue.js"></script>
-<script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <script src="../plugins/axios/axios.min.js"></script>
-<script src="/neo4j/js/echarts.common.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@4.5.0/dist/echarts.min.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@4.5.0/dist/echarts.min.js"></script>
 
 
 <script>
@@ -106,6 +105,7 @@
             this.getHeads()
         },
         methods: {
+            // 查询所有节点
             getHeads() {
                 axios.get("http://localhost:8080/neo4j/getHeads")
                     .then(({data}) => {
@@ -116,6 +116,7 @@
                         this.$message.error(err)
                     })
             },
+            // 选择的节点改变时，查询节点关系
             headChange(val) {
                 this.relation = ''
                 this.selectedRelation = ''
@@ -127,6 +128,7 @@
                         this.$message.error(err)
                     })
             },
+            // 查询知识图谱
             searchGraph() {
                 if (this.selectedHead === '' && this.selectedRelation === '') {
                     console.log("head和relation都为空")
@@ -163,6 +165,7 @@
                         })
                 }
             },
+            // 查询单个节点的属性
             searchNode(name) {
                 axios.get("http://localhost:8080/neo4j/getHead/" + name)
                     .then(({data}) => {
@@ -174,6 +177,7 @@
                         this.$message.error("数据异常")
                     })
             },
+            // 绘制知识图谱
             draw(triplet) {
                 var myChart = echarts.init(document.getElementById('graph'));
                 var myNodes = []
@@ -187,6 +191,7 @@
                     var node = {
                         "name": element
                     }
+                    node['draggable'] = true;  // 设置节点可拖拽
                     myNodes.push(node)
                 })
 
@@ -318,7 +323,7 @@
                 myChart.setOption(option);
                 // 点击事件
                 var _this = this
-                myChart.on('click', function (param){
+                myChart.on('click', function (param) {
                     if (param.dataType == 'node') {
                         // this.clickNode = param.name;
                         _this.searchNode(param.name)
@@ -327,6 +332,15 @@
                         console.log('点击关系:', param.value);
                     }
                 });
+                // 松开鼠标事件，设置节点拖拽后不复原位置
+                myChart.on('mouseup',function(params){
+                    var option=myChart.getOption();
+                    option.series[0].data[params.dataIndex].x=params.event.offsetX;
+                    option.series[0].data[params.dataIndex].y=params.event.offsetY;
+                    option.series[0].data[params.dataIndex].fixed=true;
+                    myChart.setOption(option);
+                });
+
             }
         }
     })
