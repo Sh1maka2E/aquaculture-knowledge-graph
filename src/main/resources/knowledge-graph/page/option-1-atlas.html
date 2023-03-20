@@ -68,12 +68,11 @@
         <!--知识图谱 -->
         <el-main>
             <div id="graph" style="width: 100%;height:100%;"></div>
-            <!-- 节点信息表单 -->
+            <!-- 节点信息描述列表 -->
             <el-dialog title="节点信息" :visible.sync="dialogTableVisible">
-                <!--                <el-table :data="gridData" >-->
-                <!--                    <el-table-column v-for="(key,value) in gridData" :property = "value" :label = "key" width="150"></el-table-column>-->
-                <!--                </el-table>-->
-                <p v-for="(value,key) in gridData" :key="key" :value="value">{{key}}:{{value}}</p>
+                <el-descriptions  v-for="(value, key) in nodeData" :column="1" border>
+                    <el-descriptions-item v-bind:label="key" >{{value}}</el-descriptions-item>
+                </el-descriptions>
             </el-dialog>
         </el-main>
 
@@ -97,9 +96,8 @@
             head: [],
             relation: [],
             triplet: [],
-            gridData: [],
+            nodeData: {},
             dialogTableVisible: false,
-            formLabelWidth: '120px'
         },
         created() {
             this.getHeads()
@@ -109,7 +107,6 @@
             getHeads() {
                 axios.get("http://localhost:8080/neo4j/getHeads")
                     .then(({data}) => {
-                        console.log(data)
                         this.head = data;
                     })
                     .catch(err => {
@@ -134,7 +131,6 @@
                     console.log("head和relation都为空")
                     axios.get("http://localhost:8080/neo4j/getRelations/")
                         .then(({data}) => {
-                            console.log(data)
                             this.triplet = data;
                             this.draw(data);
                         })
@@ -145,7 +141,6 @@
                     console.log("relation为空")
                     axios.get("http://localhost:8080/neo4j/getRelations/" + this.selectedHead)
                         .then(({data}) => {
-                            console.log(data)
                             this.triplet = data;
                             this.draw(data);
                         })
@@ -156,7 +151,6 @@
                     console.log("head和relation都不为空")
                     axios.get("http://localhost:8080/neo4j/getRelations/" + this.selectedHead + '/' + this.selectedRelation)
                         .then(({data}) => {
-                            console.log(data)
                             this.triplet = data;
                             this.draw(data);
                         })
@@ -169,8 +163,8 @@
             searchNode(name) {
                 axios.get("http://localhost:8080/neo4j/getHead/" + name)
                     .then(({data}) => {
-                        this.gridData = data;
-                        console.log(this.gridData)
+                        console.log(data);
+                        this.nodeData = data;
                         this.dialogTableVisible = true;
                     })
                     .catch(err => {
@@ -325,11 +319,7 @@
                 var _this = this
                 myChart.on('click', function (param) {
                     if (param.dataType == 'node') {
-                        // this.clickNode = param.name;
                         _this.searchNode(param.name)
-                        console.log('点击节点:', param.name);
-                    } else {
-                        console.log('点击关系:', param.value);
                     }
                 });
                 // 松开鼠标事件，设置节点拖拽后不复原位置
