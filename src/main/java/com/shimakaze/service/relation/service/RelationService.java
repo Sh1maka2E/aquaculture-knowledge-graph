@@ -23,4 +23,5 @@ public interface RelationService {
      * @return
      */
     List<String> getRelationsWithoutRepetition(String name);
+
 }

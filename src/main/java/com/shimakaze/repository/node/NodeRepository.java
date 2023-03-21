@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface NodeRepository  extends Neo4jRepository<String, Long> {
-//    @Query("MATCH (n{name:{0}}) RETURN properties(n)")
     //查询节点的标签
     @Query("MATCH (n{name:{0}}) RETURN labels(n)")
     String getLabel(String name);

@@ -1,6 +1,5 @@
 package com.shimakaze.service.node.impl;
 
-import com.shimakaze.pojo.node.AquaticProduct;
 import com.shimakaze.repository.node.NodeRepository;
 import com.shimakaze.service.node.*;
 import lombok.extern.slf4j.Slf4j;

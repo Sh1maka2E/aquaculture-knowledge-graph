@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 public class RaisedInServiceImpl implements RaisedInService {
     @Autowired
-    private RaisedInRepository RaisedInRepository;
+    private RaisedInRepository raisedInRepository;
 
     /**
      * 查询关系，仅返回头节点、尾节点、关系的名称
@@ -26,7 +26,7 @@ public class RaisedInServiceImpl implements RaisedInService {
     @Override
     public List<RelationDto> getRelations() {
         List<RelationDto> list = new ArrayList<>();
-        RaisedInRepository.getRelations().forEach(relation -> {
+        raisedInRepository.getRelations().forEach(relation -> {
             RelationDto relationDto = new RelationDto();
             relationDto.setStartNode(relation.getStartNode().getName());
             // 使用工具类获取关系类注解（即名称）并赋给relation
@@ -45,7 +45,7 @@ public class RaisedInServiceImpl implements RaisedInService {
     @Override
     public List<RelationDto> getRelations(String name) {
         List<RelationDto> list = new ArrayList<>();
-        RaisedInRepository.getRelations(name).forEach(relation -> {
+        raisedInRepository.getRelations(name).forEach(relation -> {
             RelationDto relationDto = new RelationDto();
             relationDto.setStartNode(name);
             // 使用工具类获取关系类注解（即名称）并赋给relation

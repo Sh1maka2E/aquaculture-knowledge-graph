@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 public class LiveInServiceImpl implements LiveInService {
     @Autowired
-    private LiveInRepository LiveInRepository;
+    private LiveInRepository liveInRepository;
 
     /**
      * 查询关系，仅返回头节点、尾节点、关系的名称
@@ -26,7 +26,7 @@ public class LiveInServiceImpl implements LiveInService {
     @Override
     public List<RelationDto> getRelations() {
         List<RelationDto> list = new ArrayList<>();
-        LiveInRepository.getRelations().forEach(relation -> {
+        liveInRepository.getRelations().forEach(relation -> {
             RelationDto relationDto = new RelationDto();
             relationDto.setStartNode(relation.getStartNode().getName());
             // 使用工具类获取关系类注解（即名称）并赋给relation
@@ -45,7 +45,7 @@ public class LiveInServiceImpl implements LiveInService {
     @Override
     public List<RelationDto> getRelations(String name) {
         List<RelationDto> list = new ArrayList<>();
-        LiveInRepository.getRelations(name).forEach(relation -> {
+        liveInRepository.getRelations(name).forEach(relation -> {
             RelationDto relationDto = new RelationDto();
             relationDto.setStartNode(name);
             // 使用工具类获取关系类注解（即名称）并赋给relation

@@ -7,9 +7,21 @@
     <link rel="stylesheet" href="../css/my-element-ui.css">
     <link rel="icon" href="https://cn.vuejs.org/logo.svg">
 </head>
+<style>
+
+</style>
 <body>
 <el-main id="app" style="display: none;" :style="{display: 'block'}">
-    这里是选项2..
+    <div class="block">
+        <span class="demonstration">单选可搜索</span>
+        <el-cascader
+                placeholder="试试搜索：指南"
+                @change="change"
+                :options="options"
+                clearable
+                filterable></el-cascader>
+    </div>
+    </div>
 </el-main>
 </body>
 
@@ -18,11 +30,45 @@
 <script src="../plugins/axios/axios.min.js"></script>
 
 
-
-
 <script>
     new Vue({
-        el: '#app'
+        el: '#app',
+        data: {
+            options: [{
+                value: '水产品',
+                label: '水产品',
+                children: [
+                    {
+                        value: '草鱼',
+                        label: '草鱼',
+                    },
+                    {
+                        value: '南美白对虾',
+                        label: '南美白对虾',
+                    }]
+            },
+                {
+                    value: '疾病',
+                    label: '疾病',
+                    children: [
+                        {
+                            value: '疾病1',
+                            label: '疾病1',
+                        },
+                        {
+                            value: '疾病2',
+                            label: '疾病2',
+                        }]
+                }]
+        },
+        created() {
+
+        },
+        methods: {
+            change(val) {
+                console.log(val)
+            }
+        }
     })
 </script>
 </html>

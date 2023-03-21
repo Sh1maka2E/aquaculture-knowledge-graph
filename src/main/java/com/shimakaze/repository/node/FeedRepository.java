@@ -1,8 +1,5 @@
 package com.shimakaze.repository.node;
 
-
-
-import com.shimakaze.pojo.node.Equipment;
 import com.shimakaze.pojo.node.Feed;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.Neo4jRepository;

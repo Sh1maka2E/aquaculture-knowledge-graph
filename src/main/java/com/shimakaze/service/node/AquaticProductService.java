@@ -1,6 +1,5 @@
 package com.shimakaze.service.node;
 
-import com.shimakaze.common.Result;
 import com.shimakaze.pojo.node.AquaticProduct;
 
 import java.util.List;

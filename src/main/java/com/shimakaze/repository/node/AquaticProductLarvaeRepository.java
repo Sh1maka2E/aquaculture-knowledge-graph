@@ -1,7 +1,5 @@
 package com.shimakaze.repository.node;
 
-
-import com.shimakaze.pojo.node.AquaticProduct;
 import com.shimakaze.pojo.node.AquaticProductLarvae;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.Neo4jRepository;

@@ -14,13 +14,13 @@ import org.neo4j.ogm.annotation.RelationshipEntity;
 public class GetAnnotationNameUtil {
 
     public static String getNodeName(Class clazz){
-        // 反射获取Node注解的type值，即节点标签名称
+        // 反射获取NodeEntity注解的label值，即节点标签名称
         String label = ((NodeEntity) clazz.getAnnotation(NodeEntity.class)).label();
         return label;
     }
 
     public static String getRelationName(Class clazz){
-        // 反射获取Node注解的type值，即节点标签名称
+        // 反射获取RelationshipEntity注解的type值，即关系名称
         String relation = ((RelationshipEntity) clazz.getAnnotation(RelationshipEntity.class)).type();
         return relation;
     }

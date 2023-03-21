@@ -11,5 +11,4 @@ import org.neo4j.ogm.annotation.RelationshipEntity;
 @Data
 @RelationshipEntity(type = "投喂")
 public class Feeding extends CommonRelation {
-
 }
