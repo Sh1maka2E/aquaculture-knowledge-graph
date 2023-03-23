@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.neo4j.ogm.annotation.GraphId;
+import org.neo4j.ogm.annotation.Property;
 
 
 /**
@@ -14,6 +15,13 @@ public class CommonNode {
     @GraphId
     @JsonIgnore //id不需要返回给前端
     protected Long id;
-    @JsonProperty(value = "名称") //返回给前端的属性名称
+//    @JsonProperty(value = "名称") //返回给前端的属性名称
     protected String name;
+
+    /**
+     * 所属标签
+     */
+    @Property(name = "所属标签")
+//    @JsonProperty(value = "所属标签")
+    private String label;
 }

@@ -70,12 +70,4 @@ public class AquaticProduct extends CommonNode {
     @Property(name = "图片")
     @JsonProperty(value = "图片")
     private String imgUrl;
-
-    /**
-     * 所属标签
-     */
-    @Property(name = "所属标签")
-    @JsonProperty(value = "所属标签")
-    private String label;
-
 }

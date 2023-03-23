@@ -60,12 +60,12 @@
     <div class="block">
         <el-cascader
                 :options="options"
-                :props="{ checkStrictly: true }"
+                :props="{emitPath: false}"
                 :show-all-levels="false"
                 v-model="selectedHead"
                 filterable
                 clearable></el-cascader>
-    </div>{{selectedHead[selectedHead.length - 1]}}
+    </div>{{selectedHead}}
 
 
 </div>
@@ -76,7 +76,6 @@
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <script src="../plugins/axios/axios.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/echarts@4.5.0/dist/echarts.min.js"></script>
-
 
 <script>
     new Vue({

@@ -13,7 +13,7 @@ public interface NodeService {
      * 查询所有节点
      * @return
      */
-    List<String> getNodes();
+    List<Object> getNodes();
 
     /**
      * 查询个节点的标签

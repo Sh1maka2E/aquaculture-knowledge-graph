@@ -32,7 +32,7 @@ public class Neo4jController {
      * @return
      */
     @GetMapping("/getHeads")
-    public List<String> getHeads(){
+    public List<Object> getHeads(){
         return nodeService.getNodes();
     }
 

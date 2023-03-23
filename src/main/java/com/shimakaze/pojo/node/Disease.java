@@ -35,11 +35,4 @@ public class Disease extends CommonNode {
     @Property(name = "防治方法")
     @JsonProperty(value = "防治方法")
     private String controlMethod;
-
-    /**
-     * 所属标签
-     */
-    @Property(name = "所属标签")
-    @JsonProperty(value = "所属标签")
-    private String label;
 }

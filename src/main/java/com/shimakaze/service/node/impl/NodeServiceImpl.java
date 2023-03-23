@@ -46,17 +46,29 @@ public class NodeServiceImpl implements NodeService {
      * @return
      */
     @Override
-    public List<String> getNodes() {
-        List<String> list = new ArrayList<>();
-        aquaticProductService.getNodes().forEach(node -> list.add(node.getName()));
-        aquaticProductLarvaeService.getNodes().forEach(node -> list.add(node.getName()));
-        diseaseService.getNodes().forEach(node -> list.add(node.getName()));
-        equipmentService.getNodes().forEach(node -> list.add(node.getName()));
-        feedService.getNodes().forEach(node -> list.add(node.getName()));
-        habitatService.getNodes().forEach(node -> list.add(node.getName()));
-        seedingPlaceService.getNodes().forEach(node -> list.add(node.getName()));
+    public List<Object> getNodes() {
+        List<Object> list = new ArrayList<>();
+        list.addAll(aquaticProductService.getNodes());
+        list.addAll(aquaticProductLarvaeService.getNodes());
+        list.addAll(diseaseService.getNodes());
+        list.addAll(equipmentService.getNodes());
+        list.addAll(feedService.getNodes());
+        list.addAll(habitatService.getNodes());
+        list.addAll(seedingPlaceService.getNodes());
         return list;
     }
+//    @Override
+//    public List<String> getNodes() {
+//        List<String> list = new ArrayList<>();
+//        aquaticProductService.getNodes().forEach(node -> list.add(node.getName()));
+//        aquaticProductLarvaeService.getNodes().forEach(node -> list.add(node.getName()));
+//        diseaseService.getNodes().forEach(node -> list.add(node.getName()));
+//        equipmentService.getNodes().forEach(node -> list.add(node.getName()));
+//        feedService.getNodes().forEach(node -> list.add(node.getName()));
+//        habitatService.getNodes().forEach(node -> list.add(node.getName()));
+//        seedingPlaceService.getNodes().forEach(node -> list.add(node.getName()));
+//        return list;
+//    }
 
     /**
      * 查询节点的标签

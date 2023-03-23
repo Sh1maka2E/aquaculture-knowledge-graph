@@ -30,12 +30,4 @@ public class AquaticProductLarvae extends CommonNode {
     @JsonProperty(value = "饲养饵料")
     private String feeding;
 
-    /**
-     * 所属标签
-     */
-    @Property(name = "所属标签")
-    @JsonProperty(value = "所属标签")
-    private String label;
-
-
 }

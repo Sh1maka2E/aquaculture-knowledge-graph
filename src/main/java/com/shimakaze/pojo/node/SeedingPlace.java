@@ -36,10 +36,4 @@ public class SeedingPlace extends CommonNode {
     @JsonProperty(value = "池塘设备")
     private String equipment;
 
-    /**
-     * 所属标签
-     */
-    @Property(name = "所属标签")
-    @JsonProperty(value = "所属标签")
-    private String label;
 }

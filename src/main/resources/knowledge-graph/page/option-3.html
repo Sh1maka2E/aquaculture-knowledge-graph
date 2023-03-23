@@ -10,7 +10,18 @@
 <body>
 <el-main id="app"
 >
-    这里是选项3..
+    <template>
+        <el-select v-model="value" placeholder="请选择">
+            <el-option
+                    v-for="item in options"
+                    :key="item.值"
+                    :label="item.标签"
+                    :value="item.标签">
+            </el-option>
+        </el-select>
+    </template>
+
+
 </el-main>
 </body>
 
@@ -21,7 +32,28 @@
 
 <script>
     new Vue({
-        el: '#app'
+        el: '#app',
+        data() {
+            return {
+                options: [{
+                    '值': '选项1',
+                    '标签': '黄金糕'
+                }, {
+                    '值': '选项2',
+                    '标签': '双皮奶'
+                }, {
+                    '值': '选项3',
+                    '标签': '蚵仔煎'
+                }, {
+                    '值': '选项4',
+                    '标签': '龙须面'
+                }, {
+                    '值': '选项5',
+                    '标签': '北京烤鸭'
+                }],
+                value: ''
+            }
+        }
     })
 </script>
 </html>

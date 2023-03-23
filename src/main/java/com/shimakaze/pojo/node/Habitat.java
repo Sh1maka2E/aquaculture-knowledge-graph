@@ -16,10 +16,4 @@ import org.neo4j.ogm.annotation.Property;
 @NodeEntity(label = "栖息地")
 public class Habitat extends CommonNode {
 
-    /**
-     * 所属标签
-     */
-    @Property(name = "所属标签")
-    @JsonProperty(value = "所属标签")
-    private String label;
 }

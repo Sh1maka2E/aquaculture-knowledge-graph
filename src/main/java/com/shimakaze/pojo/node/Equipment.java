@@ -23,10 +23,4 @@ public class Equipment extends CommonNode {
     @JsonProperty(value = "作用")
     private String function;
 
-    /**
-     * 所属标签
-     */
-    @Property(name = "所属标签")
-    @JsonProperty(value = "所属标签")
-    private String label;
 }

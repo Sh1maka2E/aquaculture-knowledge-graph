@@ -22,10 +22,4 @@ public class Feed extends CommonNode {
     @JsonProperty(value = "营养成分")
     private String nutrient;
 
-    /**
-     * 所属标签
-     */
-    @Property(name = "所属标签")
-    @JsonProperty(value = "所属标签")
-    private String label;
 }
