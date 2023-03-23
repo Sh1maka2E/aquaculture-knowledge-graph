@@ -17,9 +17,16 @@ import org.neo4j.ogm.annotation.Property;
 public class Equipment extends CommonNode {
 
     /**o
-     * 池塘设备属性
+     * 作用
      */
-    @Property(name = "池塘设备属性")
-    @JsonProperty(value = "池塘设备属性")
-    private String equipmentProperty;
+    @Property(name = "作用")
+    @JsonProperty(value = "作用")
+    private String function;
+
+    /**
+     * 所属标签
+     */
+    @Property(name = "所属标签")
+    @JsonProperty(value = "所属标签")
+    private String label;
 }

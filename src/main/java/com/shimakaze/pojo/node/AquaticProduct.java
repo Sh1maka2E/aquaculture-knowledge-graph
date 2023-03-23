@@ -18,16 +18,16 @@ public class AquaticProduct extends CommonNode {
     /**
      * 别名
      */
-    @Property(name = "俗称")
-    @JsonProperty(value = "俗称")
+    @Property(name = "别名")
+    @JsonProperty(value = "别名")
     private String alias;
 
     /**
-     * 可能患有疾病
+     * 特征
      */
-    @Property(name = "可能患有疾病")
-    @JsonProperty(value = "可能患有疾病")
-    private String maySuffer;
+    @Property(name = "特征")
+    @JsonProperty(value = "特征")
+    private String characteristic;
 
     /**
      * 栖息地
@@ -37,11 +37,11 @@ public class AquaticProduct extends CommonNode {
     private String habitat;
 
     /**
-     * 特征
+     * 繁殖季节
      */
-    @Property(name = "特征")
-    @JsonProperty(value = "特征")
-    private String characteristic;
+    @Property(name = "繁殖季节")
+    @JsonProperty(value = "繁殖季节")
+    private String breedingSeason;
 
     /**
      * 育苗场地
@@ -56,4 +56,26 @@ public class AquaticProduct extends CommonNode {
     @Property(name = "饲养饵料")
     @JsonProperty(value = "饲养饵料")
     private String feeding;
+
+    /**
+     * 可能患有疾病
+     */
+    @Property(name = "可能患有疾病")
+    @JsonProperty(value = "可能患有疾病")
+    private String maySuffer;
+
+    /**
+     * 图片url
+     */
+    @Property(name = "图片")
+    @JsonProperty(value = "图片")
+    private String imgUrl;
+
+    /**
+     * 所属标签
+     */
+    @Property(name = "所属标签")
+    @JsonProperty(value = "所属标签")
+    private String label;
+
 }

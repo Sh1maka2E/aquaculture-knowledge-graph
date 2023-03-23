@@ -15,12 +15,17 @@ import org.neo4j.ogm.annotation.Property;
 @Data
 @NodeEntity(label = "饲养饵料")
 public class Feed extends CommonNode {
+    /**
+     * 营养成分
+     */
+    @Property(name = "营养成分")
+    @JsonProperty(value = "营养成分")
+    private String nutrient;
 
     /**
-     * 特征
+     * 所属标签
      */
-    @Property(name = "特征")
-    @JsonProperty(value = "特征")
-    private String characteristic;
-
+    @Property(name = "所属标签")
+    @JsonProperty(value = "所属标签")
+    private String label;
 }

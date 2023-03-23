@@ -17,13 +17,6 @@ import org.neo4j.ogm.annotation.Property;
 public class AquaticProductLarvae extends CommonNode {
 
     /**
-     * 特征
-     */
-    @Property(name = "特征")
-    @JsonProperty(value = "特征")
-    private String characteristic;
-
-    /**
      * 成长
      */
     @Property(name = "成长")
@@ -36,4 +29,13 @@ public class AquaticProductLarvae extends CommonNode {
     @Property(name = "饲养饵料")
     @JsonProperty(value = "饲养饵料")
     private String feeding;
+
+    /**
+     * 所属标签
+     */
+    @Property(name = "所属标签")
+    @JsonProperty(value = "所属标签")
+    private String label;
+
+
 }

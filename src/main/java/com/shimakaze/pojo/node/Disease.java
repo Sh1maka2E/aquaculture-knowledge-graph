@@ -15,11 +15,31 @@ import org.neo4j.ogm.annotation.Property;
 @Data
 @NodeEntity(label = "疾病")
 public class Disease extends CommonNode {
-
     /**
      * 症状
      */
     @Property(name = "症状")
     @JsonProperty(value = "症状")
     private String symptom;
+
+    /**
+     * 病因
+     */
+    @Property(name = "病因")
+    @JsonProperty(value = "病因")
+    private String etiology;
+
+    /**
+     * 防治方法
+     */
+    @Property(name = "防治方法")
+    @JsonProperty(value = "防治方法")
+    private String controlMethod;
+
+    /**
+     * 所属标签
+     */
+    @Property(name = "所属标签")
+    @JsonProperty(value = "所属标签")
+    private String label;
 }
