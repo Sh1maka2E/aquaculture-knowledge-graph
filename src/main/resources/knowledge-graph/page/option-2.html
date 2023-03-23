@@ -7,67 +7,124 @@
     <link rel="stylesheet" href="../css/my-element-ui.css">
     <link rel="icon" href="https://cn.vuejs.org/logo.svg">
 </head>
-<style>
+<style lang="scss">
+    .tool_box {
+        padding: 15px;
+        color: #333;
+    }
+
+    .tool_title {
+        width: 400px;
+        font-size: 32px;
+        display: flex;
+        align-items: top;
+    }
+
+    .tool_title_tag {
+
+        color: #fff;
+        font-size: 22px;
+        padding: 4px 8px;
+        background: #03BA82;
+        border-radius: 0px 8px 0px 8px;
+        margin-right: 10px;
+
+    }
+
+    .tool_titles {
+        width: 90%;
+        white-space: pre-wrap;
+        line-height: 35px;
+    }
+
+    .tool_site {
+        margin: 22px 0px 50px 0px;
+        font-size: 22px;
+    }
+
+    .tool_btn {
+        outline: none;
+        font-size: 24px;
+        width: 100%;
+        padding: 18px 0;
+        color: #fff;
+        background: #03ba82;
+        border: 0;
+        border-radius: 50px;
+    }
 
 </style>
+
 <body>
-<el-main id="app" style="display: none;" :style="{display: 'block'}">
+<div id="app" style="display: none;" :style="{display: 'block'}">
     <div class="block">
-        <span class="demonstration">单选可搜索</span>
         <el-cascader
-                placeholder="试试搜索：指南"
-                @change="change"
                 :options="options"
-                clearable
-                filterable></el-cascader>
-    </div>
-    </div>
-</el-main>
+                :props="{ checkStrictly: true }"
+                :show-all-levels="false"
+                v-model="selectedHead"
+                filterable
+                clearable></el-cascader>
+    </div>{{selectedHead[selectedHead.length - 1]}}
+
+
+</div>
+
 </body>
 
 <script src="../plugins/vue/vue.js"></script>
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <script src="../plugins/axios/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@4.5.0/dist/echarts.min.js"></script>
 
 
 <script>
     new Vue({
         el: '#app',
         data: {
+            selectedHead: "",
             options: [{
                 value: '水产品',
                 label: '水产品',
-                children: [
-                    {
-                        value: '草鱼',
-                        label: '草鱼',
-                    },
-                    {
-                        value: '南美白对虾',
-                        label: '南美白对虾',
-                    }]
-            },
-                {
-                    value: '疾病',
-                    label: '疾病',
-                    children: [
-                        {
-                            value: '疾病1',
-                            label: '疾病1',
-                        },
-                        {
-                            value: '疾病2',
-                            label: '疾病2',
-                        }]
+                children: [{
+                    value: '草鱼',
+                    label: '草鱼',
+                }, {
+                    value: '南美白对虾',
+                    label: '南美白对虾',
                 }]
+            }, {
+                value: '疾病',
+                label: '疾病',
+                children: [{
+                    value: '出血病',
+                    label: '出血病',
+                }, {
+                    value: '水霉病',
+                    label: '水霉病',
+                }, {
+                    value: '烂鳃病',
+                    label: '烂鳃病',
+                }]
+            }, {
+                value: '饲料',
+                label: '饲料',
+                children: [{
+                    value: '蚯蚓',
+                    label: '蚯蚓'
+                }, {
+                    value: '小麦',
+                    label: '小麦'
+                }, {
+                    value: '米虫',
+                    label: '米虫'
+                }]
+            }]
         },
         created() {
-
         },
         methods: {
-            change(val) {
-                console.log(val)
-            }
+
         }
     })
 </script>

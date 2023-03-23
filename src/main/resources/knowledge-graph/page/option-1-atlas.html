@@ -78,41 +78,41 @@
 <el-main id="app" style="display: none;" :style="{display: 'block'}">
     <el-container style="height: 100%">
         <el-header style="text-align: center; font-size: 24px; text-align: left; ">
-            <span>智慧水产养殖知识图谱查询</span>
+            <div style="height: 60px; background-color: #161b22">
+                <template>
+                    <el-select name="head"
+                               id="head"
+                               @change="headChange"
+                               v-model="selectedHead"
+                               filterable
+                               clearable
+                               placeholder="请选择head"
+                               style="width: 400px; margin-left: 100px;">
+                        <el-option
+                                v-for="(item,index) in head" v-bind:value="item">{{item}}
+                        </el-option>
+                    </el-select>
+                    <el-select name="relation"
+                               id="relation"
+                               v-model="selectedRelation"
+                               filterable
+                               clearable
+                               placeholder="请选择relation"
+                               style="width: 400px; margin-left: 100px; margin-right: 100px">
+                        <el-option
+                                v-for="(item,index) in relation" v-bind:value="item">{{item}}
+                        </el-option>
+                    </el-select>
+                </template>
+                <el-button @click="searchGraph" icon="el-icon-search">查询知识图谱</el-button>
+            </div>
         </el-header>
 
-        <div style="height: 60px; background-color: #161b22">
-            <template>
-                <el-select name="head"
-                           id="head"
-                           @change="headChange"
-                           v-model="selectedHead"
-                           filterable
-                           clearable
-                           placeholder="请选择head"
-                           style="width: 400px; margin-left: 100px;">
-                    <el-option
-                            v-for="(item,index) in head" v-bind:value="item">{{item}}
-                    </el-option>
-                </el-select>
-                <el-select name="relation"
-                           id="relation"
-                           v-model="selectedRelation"
-                           filterable
-                           clearable
-                           placeholder="请选择relation"
-                           style="width: 400px; margin-left: 100px; margin-right: 100px">
-                    <el-option
-                            v-for="(item,index) in relation" v-bind:value="item">{{item}}
-                    </el-option>
-                </el-select>
-            </template>
-            <el-button @click="searchGraph" icon="el-icon-search">查询知识图谱</el-button>
-        </div>
+
 
         <!--知识图谱 -->
         <el-main>
-            <div id="graph" style="width: 100%;height:100%;"></div>
+            <div id="graph" style="width: 100%;height:100%; background-color: #292c33"></div>
             <!-- 节点信息描述列表 -->
             <el-dialog title="节点信息" :visible.sync="dialogTableVisible" >
                 <el-descriptions :column="1" border>
@@ -220,6 +220,15 @@
             // 绘制知识图谱
             draw(triplet) {
                 var myChart = echarts.init(document.getElementById('graph'));
+                // 节点颜色
+                let itemColorList = [
+                    '#ecb5c9','#f79767',
+                    '#8dcc93','#f79767',
+                    '#57c7e3','#c990c0',
+                    '#d9c8ae','#f16667',
+                    '#ffc53d','#1890ff']
+                // 保存将上一次查询的节点颜色列表
+                let lastItemColorList = []
                 var myNodes = []
                 var myLinks = []
                 var set = new Set();
@@ -261,7 +270,7 @@
                     },
                     legend: {
                         x: "center",
-                        show: false
+                        show: false,
                     },
                     // 工具箱
                     toolbox: {
@@ -316,10 +325,8 @@
                                     show: true,
                                     textStyle: {
                                         // 节点文本颜色
-                                        // color: "#75bfff",
-                                        // color: "#e8c140",
-                                        color: "#ffffff",
-                                        fontSize: 18,
+                                        color: '#ffffff',
+                                        fontSize: 15,
                                     },
                                 }
                             },
@@ -340,9 +347,12 @@
                             links: myLinks,
                             itemStyle: {
                                 normal: {
+                                    // 节点颜色
                                     color: function () {
-                                        // 节点颜色
-                                        return "#f16667"
+                                        let colorIndex = Math.floor(Math.random() * itemColorList.length)
+                                        // 将节点颜色保存起来
+                                        lastItemColorList.push(colorIndex)
+                                        return itemColorList[colorIndex]
                                     },
                                 }
                             },
@@ -353,7 +363,7 @@
                                     curveness: 0,
                                     symbolSize: 10,
                                     // 关系线颜色
-                                    color: "#7ee787",
+                                    color: "#a5abb6",
                                 }
                             }
                         }
@@ -368,12 +378,17 @@
                         _this.searchNode(param.name)
                     }
                 });
-                // 松开鼠标事件，设置节点拖拽后不复原位置
+                // 松开鼠标事件
                 myChart.on('mouseup',function(params){
                     var option=myChart.getOption();
+                    // 设置节点拖拽后不复原位置
                     option.series[0].data[params.dataIndex].x=params.event.offsetX;
                     option.series[0].data[params.dataIndex].y=params.event.offsetY;
                     option.series[0].data[params.dataIndex].fixed=true;
+                    // 读取保存的节点颜色，保持节点颜色不变
+                    for (let i = 0; i < lastItemColorList.length; i++) {
+                        option.series.itemStyle.normal.color = lastItemColorList[i]
+                    }
                     myChart.setOption(option);
                 });
 
