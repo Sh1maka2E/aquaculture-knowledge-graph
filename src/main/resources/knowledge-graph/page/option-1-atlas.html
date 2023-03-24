@@ -102,19 +102,20 @@
                 <template>
                     <el-cascader
                             :options="heads"
-                            @change="headChange"
                             :props="{emitPath: false}"
                             :show-all-levels="false"
-                            v-model="selectedHead"
                             filterable
-                            clearable></el-cascader>
+                            clearable
+                            v-model="selectedHead"
+                            @change="headChange"
+                            placeholder="请选择节点"></el-cascader>
                     <el-select name="relation"
                                id="relation"
-                               v-model="selectedRelation"
+                               style="width: 400px; margin-left: 100px; margin-right: 100px"
                                filterable
                                clearable
-                               placeholder="请选择节点关系"
-                               style="width: 400px; margin-left: 100px; margin-right: 100px">
+                               v-model="selectedRelation"
+                               placeholder="请选择节点关系">
                         <el-option
                                 v-for="(item,index) in relations" v-bind:value="item">{{item}}
                         </el-option>
@@ -144,10 +145,10 @@
     </div>
 
 </body>
-<script src="../plugins/vue/vue.js"></script>
-<script src="../plugins/axios/axios.min.js"></script>
+<script src="https://unpkg.com/vue@2/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/echarts@4.5.0/dist/echarts.min.js"></script>
+<script src="https://unpkg.com/echarts@4.5.0/dist/echarts.min.js"></script>
 
 
 <script>
