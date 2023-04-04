@@ -9,6 +9,6 @@
 5.运行项目，访问`localhost:8080/knowledge-graph/page/home.html`  
 
 ## 注意
-1.springboot版本为**1.5.12.RELEASE**，如果版本过高会有未知bug
+1.springboot版本为**1.5.12.RELEASE**，如果版本过高会有bug（未解决）
 
 

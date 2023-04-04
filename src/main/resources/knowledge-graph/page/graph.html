@@ -31,6 +31,12 @@
         padding: 0px;
     }
 
+    .el-header {
+        background-color: #161b22;
+        color: #8b949e;
+        line-height: 60px;
+    }
+
     html, body, #app {
         padding: 0px;
         margin: 0px;
@@ -69,6 +75,10 @@
         background: #161b22;
     }
 
+    .my-el-descriptions-item-label {
+        width: 120px;
+    }
+
     .my-el-descriptions-item-content {
         color: #7ee787;
         background: #161b22;
@@ -97,6 +107,10 @@
 <body>
 <el-main id="app" style="display: none;" :style="{display: 'block'}">
     <el-container style="height: 100%">
+        <el-header style="text-align: center; font-size: 24px;border-bottom: 1px solid #7ee787;">
+            <span>智慧水产养殖知识图谱系统</span>
+            <i class="el-icon-share" style="font-size:30px"></i>
+        </el-header>
         <el-header style="text-align: center; font-size: 24px; text-align: left; ">
             <div style="height: 60px; background-color: #161b22">
                 <template>
@@ -133,8 +147,22 @@
             <el-dialog title="节点信息" :visible.sync="dialogTableVisible">
                 <el-descriptions :column="1" border>
                     <el-descriptions-item
+                            label="图片" v-if="image !== ''"
+                            label-class-name="my-el-descriptions-item-label"
+                            content-class-name="my-el-descriptions-item-content">
+                        <div>
+                            <el-image
+                                    style="width: 100px; height: 100px"
+                                    :src="image"
+                                    :preview-src-list="imageList">
+                            </el-image>
+                        </div>
+                    </el-descriptions-item>
+                    <el-descriptions-item
                             v-for="(value, key) in nodeInfo"
-                            v-bind:label="key" content-class-name="my-el-descriptions-item-content">{{value}}
+                            v-bind:label="key"
+                            label-class-name="my-el-descriptions-item-label"
+                            content-class-name="my-el-descriptions-item-content">{{value}}
                     </el-descriptions-item>
                 </el-descriptions>
             </el-dialog>
@@ -150,7 +178,6 @@
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <script src="https://unpkg.com/echarts@4.5.0/dist/echarts.min.js"></script>
 
-
 <script>
     const app = new Vue({
         el: "#app",
@@ -161,6 +188,8 @@
             relations: [],
             triplets: [],
             nodeInfo: {},
+            image: '',
+            imageList:[],
             dialogTableVisible: false,
         },
         created() {
@@ -247,9 +276,26 @@
             },
             // 查询单个节点的属性
             searchNode(name) {
+                this.nodeInfo = {}
+                this.image = ''
+                this.imageList = []
                 axios.get("http://localhost:8080/neo4j/getHead/" + name)
                     .then(({data}) => {
-                        this.nodeInfo = data;
+                        for (let key in data) {
+                            if (key === "name") {
+                                this.nodeInfo["名称"] = data[key]
+                            }
+                            if (key === "label") {
+                                this.nodeInfo["标签"] = data[key]
+                            }
+                            if (key === "image") {
+                                this.image = data[key]
+                                this.imageList[0] = data[key]
+                            }
+                            if (key !== "name" && key !== "label" && key !== "image") {
+                                this.nodeInfo[key] = data[key]
+                            }
+                        }
                         this.dialogTableVisible = true;
                     })
                     .catch(err => {
