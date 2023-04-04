@@ -23,6 +23,97 @@ public class AquaticProduct extends CommonNode {
     private String alias;
 
     /**
+     * 拉丁学名
+     */
+    @Property(name = "拉丁学名")
+    @JsonProperty(value = "拉丁学名")
+    private String latinName;
+
+    /**
+     * 界
+     */
+    @Property(name = "界")
+    @JsonProperty(value = "界")
+    private String taxonomyKingdom;
+
+    /**
+     * 门
+     */
+    @Property(name = "门")
+    @JsonProperty(value = "门")
+    private String taxonomyPhylum;
+
+    /**
+     * 亚门
+     */
+    @Property(name = "亚门")
+    @JsonProperty(value = "亚门")
+    private String taxonomySubPhylum;
+
+    /**
+     * 纲
+     */
+    @Property(name = "纲")
+    @JsonProperty(value = "纲")
+    private String taxonomyClass;
+
+    /**
+     * 亚纲
+     */
+    @Property(name = "亚纲")
+    @JsonProperty(value = "亚纲")
+    private String taxonomySubClass;
+
+    /**
+     * 目
+     */
+    @Property(name = "目")
+    @JsonProperty(value = "目")
+    private String taxonomyOrder;
+
+    /**
+     * 亚目
+     */
+    @Property(name = "亚目")
+    @JsonProperty(value = "亚目")
+    private String taxonomySubOrder;
+
+    /**
+     * 科
+     */
+    @Property(name = "科")
+    @JsonProperty(value = "科")
+    private String taxonomyFamily;
+
+    /**
+     * 亚科
+     */
+    @Property(name = "亚科")
+    @JsonProperty(value = "亚科")
+    private String taxonomySubFamily;
+
+    /**
+     * 属
+     */
+    @Property(name = "属")
+    @JsonProperty(value = "属")
+    private String taxonomyGenus;
+
+    /**
+     * 种
+     */
+    @Property(name = "种")
+    @JsonProperty(value = "种")
+    private String taxonomySpecies;
+
+    /**
+     * 亚种
+     */
+    @Property(name = "亚种")
+    @JsonProperty(value = "亚种")
+    private String taxonomySubSpecies;
+
+    /**
      * 特征
      */
     @Property(name = "特征")
@@ -68,6 +159,6 @@ public class AquaticProduct extends CommonNode {
      * 图片url
      */
     @Property(name = "图片")
-    @JsonProperty(value = "图片")
-    private String imgUrl;
+//    @JsonProperty(value = "图片")
+    private String image;
 }
