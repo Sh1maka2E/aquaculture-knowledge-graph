@@ -84,6 +84,14 @@
         background: #161b22;
     }
 
+    /*下拉框建议*/
+    .el-cascader__suggestion-item:focus, .el-cascader__suggestion-item:hover {
+        background-color: #2a2f3b;
+    }
+    .el-cascader__suggestion-item.is-checked {
+        color: #7ee787;
+    }
+
     /*级联下拉框*/
     .el-cascader-dropdown__item {
         color: #8b949e;
@@ -140,11 +148,19 @@
         </el-header>
 
 
-        <!--知识图谱 -->
         <el-main>
+            <!--知识图谱 -->
             <div id="graph" style="width: 100%;height:100%; background-color: #292c33"></div>
+
+            <!--点击节点弹出框-->
+            <el-dialog :title="dialogTitle" :visible.sync="nodeClickVisible" width="36%" v-model:>
+                <el-button type="primary" icon="el-icon-document" @click="searchNode">查看节点信息</el-button>
+                <el-button type="primary" icon="el-icon-aim" @click="searchGraphByNode">查看所选节点</el-button>
+                <el-button type="primary" icon="el-icon-share" @click="searchGraphByAddingRelations">查看其他关系</el-button>
+            </el-dialog>
+
             <!-- 节点信息描述列表 -->
-            <el-dialog title="节点信息" :visible.sync="dialogTableVisible">
+            <el-dialog title="节点信息" :visible.sync="nodeInfoDialogTableVisible">
                 <el-descriptions :column="1" border>
                     <el-descriptions-item
                             label="图片" v-if="image !== ''"
@@ -182,15 +198,34 @@
     const app = new Vue({
         el: "#app",
         data: {
+            // 下拉框选择的节点
             selectedHead: '',
+            // 下拉框选择的关系
             selectedRelation: '',
+            // 图谱选中的节点
+            selectedNode:'',
+            // 下拉框中所有head的列表
             heads: [],
+            // 下拉框中所有relation的列表
             relations: [],
+            // 节点-关系-节点三元组
             triplets: [],
+            // 节点set，用于新增节点关系
+            nodeSet: [],
+            // 图谱配置
+            graphOption:{},
+            // 节点属性
             nodeInfo: {},
+            // 节点图片
             image: '',
+            // 存放节点放大图片的列表
             imageList:[],
-            dialogTableVisible: false,
+            // 节点描述列表标题
+            dialogTitle:'',
+            // 点击节点的窗口
+            nodeClickVisible: false,
+            // 节点属性窗口
+            nodeInfoDialogTableVisible: false
         },
         created() {
             this.getHeads()
@@ -249,7 +284,7 @@
                     axios.get("http://localhost:8080/neo4j/getRelations/")
                         .then(({data}) => {
                             this.triplets = data;
-                            this.draw(data);
+                            this.draw(data, false);
                         })
                         .catch(err => {
                             this.$message.error("数据异常")
@@ -258,7 +293,7 @@
                     axios.get("http://localhost:8080/neo4j/getRelations/" + this.selectedHead)
                         .then(({data}) => {
                             this.triplets = data;
-                            this.draw(data);
+                            this.draw(data, false);
                         })
                         .catch(err => {
                             this.$message.error("数据异常")
@@ -267,7 +302,7 @@
                     axios.get("http://localhost:8080/neo4j/getRelations/" + this.selectedHead + '/' + this.selectedRelation)
                         .then(({data}) => {
                             this.triplets = data;
-                            this.draw(data);
+                            this.draw(data, false);
                         })
                         .catch(err => {
                             this.$message.error("数据异常")
@@ -275,11 +310,11 @@
                 }
             },
             // 查询单个节点的属性
-            searchNode(name) {
+            searchNode() {
                 this.nodeInfo = {}
                 this.image = ''
                 this.imageList = []
-                axios.get("http://localhost:8080/neo4j/getHead/" + name)
+                axios.get("http://localhost:8080/neo4j/getHead/" + this.selectedNode)
                     .then(({data}) => {
                         for (let key in data) {
                             if (key === "name") {
@@ -296,164 +331,229 @@
                                 this.nodeInfo[key] = data[key]
                             }
                         }
-                        this.dialogTableVisible = true;
+                        this.nodeInfoDialogTableVisible = true;
+                    })
+                    .catch(err => {
+                        this.$message.error("数据异常")
+                    })
+            },
+            // 查询所选择节点的关系图
+            searchGraphByNode() {
+                this.nodeClickVisible = false
+                axios.get("http://localhost:8080/neo4j/getRelations/" + this.selectedNode)
+                    .then(({data}) => {
+                        this.triplets = data;
+                        this.draw(data, false);
+                    })
+                    .catch(err => {
+                        this.$message.error("数据异常")
+                    })
+            },
+            // 在原来的关系图的基础上追加选择节点的关系
+            searchGraphByAddingRelations() {
+                this.nodeClickVisible = false
+                axios.get("http://localhost:8080/neo4j/getRelations/" + this.selectedNode)
+                    .then(({data}) => {
+                        this.triplets = data;
+                        this.draw(data, true);
                     })
                     .catch(err => {
                         this.$message.error("数据异常")
                     })
             },
             // 绘制知识图谱
-            draw(triplets) {
-                var myChart = echarts.init(document.getElementById('graph'));
-                // 节点颜色
+            draw(triplets, isAddingRelations) {
+                let myChart = echarts.init(document.getElementById('graph'));
+                let link;
+                let node;
+                // 节点配置
+                let option = {};
+                // 节点颜色列表
                 let ColorList = [
-                    '#ecb5c9', '#f79767','#8dcc93', '#f79767',
-                    '#57c7e3', '#c990c0','#d9c8ae', '#f16667',
+                    '#ecb5c9', '#f79767', '#8dcc93', '#f79767',
+                    '#57c7e3', '#c990c0', '#d9c8ae', '#f16667',
                     '#ffc53d', '#1890ff']
-                var myNodes = []
-                var myLinks = []
-                var set = new Set();
-                for (let i = 0; i < triplets.length; i++) {
-                    set.add(triplets[i].startNode)
-                    set.add(triplets[i].endNode)
-                }
-                set.forEach(function (element) {
-                    var node = {
-                        "name": element
+                if (isAddingRelations) {
+                    option = this.graphOption
+                    for (let i = 0; i < triplets.length; i++) {
+                        if (!this.nodeSet.has(triplets[i].startNode)) {
+                            this.nodeSet.add(triplets[i].startNode)
+                            node = {
+                                "name": triplets[i].startNode
+                            };
+                            node['draggable'] = true;  // 设置节点可拖拽
+                            option.series[0].data.push(node)
+                        }
+                        if (!this.nodeSet.has(triplets[i].endNode)) {
+                            this.nodeSet.add(triplets[i].endNode)
+                            node = {
+                                "name": triplets[i].endNode
+                            };
+                            node['draggable'] = true;  // 设置节点可拖拽
+                            option.series[0].data.push(node)
+                        }
+                        link = {
+                            "source": triplets[i].startNode,
+                            "target": triplets[i].endNode,
+                            "value": triplets[i].relation,
+                            "symbolSize": 10
+                        }
+                        option.series[0].links.push(link)
                     }
-                    node['draggable'] = true;  // 设置节点可拖拽
-                    myNodes.push(node)
-                })
+                    this.graphOption = option
+                } else {
+                    let myNodes = []
+                    let myLinks = []
+                    let set = new Set();
+                    for (let i = 0; i < triplets.length; i++) {
+                        set.add(triplets[i].startNode)
+                        set.add(triplets[i].endNode)
+                    }
+                    this.nodeSet = set
+                    set.forEach(function (element) {
+                        node = {
+                            "name": element
+                        }
+                        node['draggable'] = true;  // 设置节点可拖拽
+                        myNodes.push(node)
+                    })
 
-                for (let i = 0; i < triplets.length; i++) {
-                    var link = {
-                        "source": triplets[i].startNode,
-                        "target": triplets[i].endNode,
-                        "value": triplets[i].relation,
-                        "symbolSize": 10
+                    for (let i = 0; i < triplets.length; i++) {
+                        link = {
+                            "source": triplets[i].startNode,
+                            "target": triplets[i].endNode,
+                            "value": triplets[i].relation,
+                            "symbolSize": 10
+                        };
+                        myLinks.push(link)
                     }
-                    myLinks.push(link)
-                }
-                var option = {
-                    title: {
-                        text: ''
-                    },
-                    tooltip: {},
-                    animationDurationUpdate: 1500,
-                    animationEasingUpdate: 'quinticInOut',
-                    label: {
-                        normal: {
+                    option = {
+                        title: {
+                            text: ''
+                        },
+                        tooltip: {},
+                        animationDurationUpdate: 1500,
+                        animationEasingUpdate: 'quinticInOut',
+                        label: {
+                            normal: {
+                                show: true,
+                                textStyle: {
+                                    fontSize: 20
+                                },
+                            }
+                        },
+                        legend: {
+                            x: "center",
+                            show: false,
+                        },
+                        // 工具箱
+                        toolbox: {
+                            // 显示工具箱
                             show: true,
-                            textStyle: {
-                                fontSize: 20
-                            },
-                        }
-                    },
-                    legend: {
-                        x: "center",
-                        show: false,
-                    },
-                    // 工具箱
-                    toolbox: {
-                        // 显示工具箱
-                        show: true,
-                        feature: {
-                            mark: {
-                                show: true
-                            },
-                            // 还原
-                            restore: {
-                                show: true
-                            },
-                            // 保存为图片
-                            saveAsImage: {
-                                show: true
-                            }
-                        }
-                    },
-                    series: [
-                        {
-                            type: 'graph',
-                            layout: 'force',
-                            symbolSize: 45,
-                            focusNodeAdjacency: true,
-                            roam: true,
-                            edgeSymbol: ['none', 'arrow'],
-                            categories: [{
-                                name: '查询实体',
-                                itemStyle: {
-                                    normal: {
-                                        color: "#009800",
-                                    }
-                                }
-                            }, {
-                                name: 'instance',
-                                itemStyle: {
-                                    normal: {
-                                        color: "#4592FF",
-                                    }
-                                }
-                            }, {
-                                name: 'class',
-                                itemStyle: {
-                                    normal: {
-                                        color: "#C71585",
-                                    }
-                                }
-                            }],
-                            label: {
-                                normal: {
-                                    show: true,
-                                    textStyle: {
-                                        // 节点文本颜色
-                                        color: '#ffffff',
-                                        fontSize: 15,
-                                    },
-                                }
-                            },
-                            force: {
-                                repulsion: 1000
-                            },
-                            edgeSymbolSize: [4, 50],
-                            edgeLabel: {
-                                normal: {
-                                    show: true,
-                                    textStyle: {
-                                        fontSize: 18
-                                    },
-                                    formatter: "{c}"
-                                }
-                            },
-                            data: myNodes,
-                            links: myLinks,
-                            itemStyle: {
-                                normal: {
-                                    // 节点颜色
-                                    color: function (param) {
-                                        return ColorList[param.dataIndex]
-                                    },
-                                }
-                            },
-                            lineStyle: {
-                                normal: {
-                                    opacity: 0.9,
-                                    width: 1.3,
-                                    curveness: 0,
-                                    symbolSize: 10,
-                                    // 关系线颜色
-                                    color: "#a5abb6",
+                            feature: {
+                                mark: {
+                                    show: true
+                                },
+                                // 还原
+                                restore: {
+                                    show: true
+                                },
+                                // 保存为图片
+                                saveAsImage: {
+                                    show: true
                                 }
                             }
-                        }
-                    ]
-                };
+                        },
+                        series: [
+                            {
+                                type: 'graph',
+                                layout: 'force',
+                                symbolSize: 45,
+                                focusNodeAdjacency: true,
+                                roam: true,
+                                edgeSymbol: ['none', 'arrow'],
+                                categories: [{
+                                    name: '查询实体',
+                                    itemStyle: {
+                                        normal: {
+                                            color: "#009800",
+                                        }
+                                    }
+                                }, {
+                                    name: 'instance',
+                                    itemStyle: {
+                                        normal: {
+                                            color: "#4592FF",
+                                        }
+                                    }
+                                }, {
+                                    name: 'class',
+                                    itemStyle: {
+                                        normal: {
+                                            color: "#C71585",
+                                        }
+                                    }
+                                }],
+                                label: {
+                                    normal: {
+                                        show: true,
+                                        textStyle: {
+                                            // 节点文本颜色
+                                            color: '#ffffff',
+                                            fontSize: 15,
+                                        },
+                                    }
+                                },
+                                force: {
+                                    repulsion: 1000,
+                                    gravity: 0.02,
+                                    layoutAnimation: true
+                                },
+                                edgeSymbolSize: [4, 50],
+                                edgeLabel: {
+                                    normal: {
+                                        show: true,
+                                        textStyle: {
+                                            fontSize: 18
+                                        },
+                                        formatter: "{c}"
+                                    }
+                                },
+                                data: myNodes,
+                                links: myLinks,
+                                itemStyle: {
+                                    normal: {
+                                        // 节点颜色
+                                        color: function (param) {
+                                            return ColorList[param.dataIndex % ColorList.length]
+                                        },
+                                    }
+                                },
+                                lineStyle: {
+                                    normal: {
+                                        opacity: 0.9,
+                                        width: 1.3,
+                                        curveness: 0,
+                                        symbolSize: 10,
+                                        // 关系线颜色
+                                        color: "#a5abb6",
+                                    }
+                                }
+                            }
+                        ]
+                    };
+                    this.graphOption = option
+                }
                 // 使用刚指定的配置项和数据显示图表。
                 myChart.setOption(option);
                 // 点击事件
                 var _this = this
                 myChart.on('click', function (param) {
                     if (param.dataType == 'node') {
-                        _this.searchNode(param.name)
+                        _this.selectedNode = param.name
+                        _this.dialogTitle = '当前选择节点:' + param.name
+                        _this.graphOption = myChart.getOption();
+                        _this.nodeClickVisible = true
                     }
                 });
                 // 松开鼠标事件
