@@ -57,18 +57,6 @@ public class NodeServiceImpl implements NodeService {
         list.addAll(seedingPlaceService.getNodes());
         return list;
     }
-//    @Override
-//    public List<String> getNodes() {
-//        List<String> list = new ArrayList<>();
-//        aquaticProductService.getNodes().forEach(node -> list.add(node.getName()));
-//        aquaticProductLarvaeService.getNodes().forEach(node -> list.add(node.getName()));
-//        diseaseService.getNodes().forEach(node -> list.add(node.getName()));
-//        equipmentService.getNodes().forEach(node -> list.add(node.getName()));
-//        feedService.getNodes().forEach(node -> list.add(node.getName()));
-//        habitatService.getNodes().forEach(node -> list.add(node.getName()));
-//        seedingPlaceService.getNodes().forEach(node -> list.add(node.getName()));
-//        return list;
-//    }
 
     /**
      * 查询节点的标签
