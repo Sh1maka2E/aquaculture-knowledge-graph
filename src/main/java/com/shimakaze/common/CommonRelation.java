@@ -3,6 +3,7 @@ package com.shimakaze.common;
 import lombok.Data;
 import org.neo4j.ogm.annotation.EndNode;
 import org.neo4j.ogm.annotation.GraphId;
+import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.StartNode;
 
 /**
@@ -15,7 +16,7 @@ import org.neo4j.ogm.annotation.StartNode;
  */
 @Data
 public class CommonRelation {
-    @GraphId
+    @Id
     protected Long id;
     /**
      * 开始节点
